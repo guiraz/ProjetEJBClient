@@ -24,6 +24,7 @@ public class ThreadMAJ extends Thread{
     @Override
     public void run() {
         while(_isActive) {
+            System.out.println("Loop");
             Maj();
 
             try {
@@ -44,12 +45,16 @@ public class ThreadMAJ extends Thread{
         
         try
         {
-            javax.naming.Context jndi_context = new javax.naming.InitialContext();
-            VehiculeFacadeRemote vf = (VehiculeFacadeRemote) jndi_context.lookup("ejb/VehiculeFacade");
-            CrisisFacadeRemote crise = (CrisisFacadeRemote) jndi_context.lookup("ejb/CrisisFacade");
-            TimeoutlogFacadeRemote tl = (TimeoutlogFacadeRemote) jndi_context.lookup("ejb/TimeoutlogFacade");
-            RouteplanFacadeRemote rp = (RouteplanFacadeRemote) jndi_context.lookup("ejb/RouteplanFacade");
-            RouteFacadeRemote rt = (RouteFacadeRemote) jndi_context.lookup("ejb/RouteFacade");
+            System.out.println("before ejb");
+            _jndi_context = new javax.naming.InitialContext();
+            System.out.println("init context");
+            VehiculeFacadeRemote vf = (VehiculeFacadeRemote) _jndi_context.lookup("VehiculeFacade");
+            CrisisFacadeRemote crise = (CrisisFacadeRemote) _jndi_context.lookup("CrisisFacade");
+            TimeoutlogFacadeRemote tl = (TimeoutlogFacadeRemote) _jndi_context.lookup("TimeoutlogFacade");
+            RouteplanFacadeRemote rp = (RouteplanFacadeRemote) _jndi_context.lookup("RouteplanFacade");
+            RouteFacadeRemote rt = (RouteFacadeRemote) _jndi_context.lookup("RouteFacade");
+            
+            System.out.println("after ejb");
             
             Main.getRessource().setCrises(crise.findAll());
             Main.getRessource().setVehicules(vf.findAll());
@@ -57,8 +62,8 @@ public class ThreadMAJ extends Thread{
             Main.getRessource().setRoutes(rt.findAll());
             Main.getRessource().setToutePlans(rp.findAll());
 
-            if (jndi_context != null) {
-                jndi_context.close();
+            if (_jndi_context != null) {
+                _jndi_context.close();
             }
         }
         catch (Throwable t)
@@ -72,4 +77,5 @@ public class ThreadMAJ extends Thread{
      * ThreadMAJ Attributes
      */
     private boolean _isActive;
+    private javax.naming.Context _jndi_context;
 }

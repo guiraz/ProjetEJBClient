@@ -15,24 +15,10 @@ public class Main {
      */
     public static void main(String[] args) {
         _ressource = new Ressources();
-        _cont = new Controller();
-        _tMAJ = new ThreadMAJ();
-        
         _mw = new MainWindow();
-        _mw.launch();
-        while(!_mw.isVisible()){
-            try {
-                Thread.sleep(5000);
-            }
-            catch(Exception e)
-            {
-                System.err.println("Caught ThreadException: " + e.getMessage());
-            }
-        }
-        
-        System.out.println("quit");
-        
-        _tMAJ.setActive(false);
+        _model = new Model();
+        _tMAJ = new ThreadMAJ();
+        _cont = new Controller();
     }
     
     public static MainWindow getView() {
@@ -47,6 +33,14 @@ public class Main {
         return _cont;
     }
     
+    public static ThreadMAJ getThreadMAJ() {
+        return _tMAJ;
+    }
+    
+    public static Model getModel() {
+        return _model;
+    }
+    
     
     /**
      * Main attributes
@@ -55,5 +49,6 @@ public class Main {
     private static Ressources _ressource;
     private static ThreadMAJ _tMAJ;
     private static Controller _cont;
+    private static Model _model;
     
 }

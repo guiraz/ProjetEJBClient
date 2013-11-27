@@ -8,10 +8,18 @@ package grazimba.ttsing.projetejbClient;
  *
  * @author grazimba
  */
-public class Controller extends Thread{
+public class Controller {
     
-    public Controller() {
-        
+    public Controller() {     
+        Main.getThreadMAJ().run();
+        System.out.println("thread launched");
+        Main.getView().launch();
+        System.out.println("view launched");
+    }
+    
+    public void exitQuery() {
+        Main.getView().dispose();
+        Main.getThreadMAJ().setActive(false);
     }
     
 }
