@@ -4,6 +4,7 @@
  */
 package grazimba.ttsing.projetejbClient;
 
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 
@@ -19,6 +20,12 @@ public final class MainWindow extends javax.swing.JFrame {
     public MainWindow() {
         super("Police Station");
         initComponents();
+        
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                ProjetEJBClient.getCont().ExitQuery();
+            }
+        });
     }
 
     /**
@@ -173,8 +180,10 @@ public final class MainWindow extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Object[] options = { "OK", "CANCEL" };
-        if(JOptionPane.showOptionDialog(null, "Voulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION)
-            Main.getCont().exitQuery();
+        if(JOptionPane.showOptionDialog(null, "Voulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
+            //this.dispose();
+            ProjetEJBClient.getCont().ExitQuery();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

@@ -10,16 +10,18 @@ package grazimba.ttsing.projetejbClient;
  */
 public class Controller {
     
-    public Controller() {     
-        Main.getThreadMAJ().run();
-        System.out.println("thread launched");
-        Main.getView().launch();
-        System.out.println("view launched");
+    public Controller() {
     }
     
-    public void exitQuery() {
-        Main.getView().dispose();
-        Main.getThreadMAJ().setActive(false);
+    public void LaunchThreads() {
+        ProjetEJBClient.getView().launch();
+        ProjetEJBClient.getThreadMAJ().start();
+    }
+    
+    public void ExitQuery() {
+        ProjetEJBClient.getView().dispose();
+        ProjetEJBClient.getThreadMAJ().SetActive(false);
+        System.exit(0);
     }
     
 }

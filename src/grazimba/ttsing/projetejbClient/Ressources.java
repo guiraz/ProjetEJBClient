@@ -17,11 +17,56 @@ public class Ressources {
     private List<Routeplan> toutePlan;
     private List<Timeoutlog> tol;
     private List<Vehicule> vehicule;
+    
+    private javax.naming.Context _jndi_context;
+    
+    private VehiculeFacadeRemote _vf;
+    private CrisisFacadeRemote _crise;
+    private TimeoutlogFacadeRemote _tl;
+    private RouteplanFacadeRemote _rp;
+    private RouteFacadeRemote _rt;
+    
+    public Ressources()
+    {
+        try
+        {
+            System.out.println("before context");
+            _jndi_context = new javax.naming.InitialContext();
+            
+            _vf = (VehiculeFacadeRemote) _jndi_context.lookup("ejb/VehiculeFacade");
+            _crise = (CrisisFacadeRemote) _jndi_context.lookup("ejb/CrisisFacade");
+            _tl = (TimeoutlogFacadeRemote) _jndi_context.lookup("ejb/TimeoutlogFacade");
+            _rp = (RouteplanFacadeRemote) _jndi_context.lookup("ejb/RouteplanFacade");
+            _rt = (RouteFacadeRemote) _jndi_context.lookup("ejb/RouteFacade");
+            
+            System.out.println("context ok");
+            ProjetEJBClient.getCont().LaunchThreads();
+            
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+            System.exit(1);
+        }
+    }
+    
+    /**
+     * @desc Call by ThreadMAJ, update ressources from db
+     */
+    public void updateRessources() {
+        setCrises(_crise.findAll());
+        setVehicules(_vf.findAll());
+        setTols(_tl.findAll());
+        setRoutes(_rt.findAll());
+        setToutePlans(_rp.findAll());
+    }
 
+    
+    
+    
     /**
      * Crisis
      * /
-    
     
     /**
      * @return the crises

@@ -8,17 +8,17 @@ package grazimba.ttsing.projetejbClient;
  *
  * @author grazimba
  */
-public class Main {
+public class ProjetEJBClient {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        _ressource = new Ressources();
         _mw = new MainWindow();
         _model = new Model();
         _tMAJ = new ThreadMAJ();
         _cont = new Controller();
+        _ressource = new Ressources();
     }
     
     public static MainWindow getView() {

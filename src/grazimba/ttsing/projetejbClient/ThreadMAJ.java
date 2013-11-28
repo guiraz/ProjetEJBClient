@@ -24,11 +24,12 @@ public class ThreadMAJ extends Thread{
     @Override
     public void run() {
         while(_isActive) {
+            
             System.out.println("Loop");
-            Maj();
+            ProjetEJBClient.getRessource().updateRessources();
 
             try {
-                Thread.sleep(30000);
+                Thread.sleep(5000);
             }
             catch(Exception e) {
                 System.err.println("Caught ThreadException: " + e.getMessage());
@@ -36,46 +37,13 @@ public class ThreadMAJ extends Thread{
         }
     }
     
-    public void setActive(boolean active) {
+    public void SetActive(boolean active) {
         _isActive = active;
     }
     
-    
-    private void Maj() {
-        
-        try
-        {
-            System.out.println("before ejb");
-            _jndi_context = new javax.naming.InitialContext();
-            System.out.println("init context");
-            VehiculeFacadeRemote vf = (VehiculeFacadeRemote) _jndi_context.lookup("VehiculeFacade");
-            CrisisFacadeRemote crise = (CrisisFacadeRemote) _jndi_context.lookup("CrisisFacade");
-            TimeoutlogFacadeRemote tl = (TimeoutlogFacadeRemote) _jndi_context.lookup("TimeoutlogFacade");
-            RouteplanFacadeRemote rp = (RouteplanFacadeRemote) _jndi_context.lookup("RouteplanFacade");
-            RouteFacadeRemote rt = (RouteFacadeRemote) _jndi_context.lookup("RouteFacade");
-            
-            System.out.println("after ejb");
-            
-            Main.getRessource().setCrises(crise.findAll());
-            Main.getRessource().setVehicules(vf.findAll());
-            Main.getRessource().setTols(tl.findAll());
-            Main.getRessource().setRoutes(rt.findAll());
-            Main.getRessource().setToutePlans(rp.findAll());
-
-            if (_jndi_context != null) {
-                _jndi_context.close();
-            }
-        }
-        catch (Throwable t)
-        {
-            t.printStackTrace();
-            System.exit(1);
-        }
-    }
     
     /**
      * ThreadMAJ Attributes
      */
     private boolean _isActive;
-    private javax.naming.Context _jndi_context;
 }
