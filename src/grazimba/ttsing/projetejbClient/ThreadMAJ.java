@@ -25,8 +25,8 @@ public class ThreadMAJ extends Thread{
     public void run() {
         while(_isActive) {
             
-            System.out.println("Loop");
             ProjetEJBClient.getRessource().updateRessources();
+            ProjetEJBClient.getCont().RessourcesUpdated();
 
             try {
                 Thread.sleep(5000);

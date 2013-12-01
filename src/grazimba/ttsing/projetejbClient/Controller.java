@@ -24,4 +24,8 @@ public class Controller {
         System.exit(0);
     }
     
+    public void RessourcesUpdated() {
+        ProjetEJBClient.getView().RessourcesUpdated();
+    }
+    
 }

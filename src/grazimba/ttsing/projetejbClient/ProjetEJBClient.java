@@ -4,6 +4,9 @@
  */
 package grazimba.ttsing.projetejbClient;
 
+enum PROGRAM_CLIENT {FIRE, POLICE};
+
+
 /**
  *
  * @author grazimba
@@ -14,6 +17,7 @@ public class ProjetEJBClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        _typeProgram = PROGRAM_CLIENT.POLICE;
         _mw = new MainWindow();
         _model = new Model();
         _tMAJ = new ThreadMAJ();
@@ -41,6 +45,10 @@ public class ProjetEJBClient {
         return _model;
     }
     
+    public static PROGRAM_CLIENT getTypeProgram() {
+        return _typeProgram;
+    }
+    
     
     /**
      * Main attributes
@@ -50,5 +58,6 @@ public class ProjetEJBClient {
     private static ThreadMAJ _tMAJ;
     private static Controller _cont;
     private static Model _model;
+    private static PROGRAM_CLIENT _typeProgram;
     
 }
