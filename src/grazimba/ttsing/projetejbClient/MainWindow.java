@@ -5,17 +5,22 @@
 package grazimba.ttsing.projetejbClient;
 
 import grazimba.ttsing.projetejb.Crisis;
-import java.awt.Container;
+import grazimba.ttsing.projetejb.Routeplan;
+import grazimba.ttsing.projetejb.Timeoutlog;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import java.security.SecureRandom;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
+
 
 /**
  *
@@ -65,6 +70,7 @@ public final class MainWindow extends javax.swing.JFrame {
 
         jButtonQuit.setText("Quitter");
         jButtonQuit.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonQuitActionPerformed(evt);
             }
@@ -72,6 +78,7 @@ public final class MainWindow extends javax.swing.JFrame {
 
         jButtonAddCrise.setText("Add Crise");
         jButtonAddCrise.addActionListener(new java.awt.event.ActionListener() {
+            @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAddCrisePerformed(evt);
             }
@@ -290,13 +297,29 @@ class MyTableModel extends AbstractTableModel {
 class AddCrisisFrame extends JFrame {
     
     private Crisis _crise;
+    private Routeplan _rp;
+    private Timeoutlog _tol;
     
     private JPanel _contentPane;
+    private GridLayout _layout;
+    private JButton _okButton;
+    private JButton _cancelButton;
     
     public AddCrisisFrame() {
         _crise = new Crisis();
+        _rp = new Routeplan();
+        _tol = new Timeoutlog();
+        
         BigInteger bi = new BigInteger(130, new Random());
         _crise.setIdcrisis(bi.toString(32).substring(0, 9));
+        _rp.setIdcrisis(_crise.getIdcrisis());
+        _tol.setIdcrisis(_crise.getIdcrisis());
+        
+        _crise.setT(new Date());
+        System.out.println(_crise.getT());
+        
+        _rp.setNbfirevehicule(0);
+        _rp.setNbpolicevehicule(0);
         
         initLayout();
 
@@ -305,24 +328,59 @@ class AddCrisisFrame extends JFrame {
     
     private void initLayout() {
         _contentPane = (JPanel) this.getContentPane();
+        _layout = new GridLayout(7,2);
+        _contentPane.setLayout(_layout);
+        
+        _okButton = new JButton("OK");
+        _cancelButton = new JButton("Cancel");
+        
+        _okButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                OKButtonActionPerformed(evt);
+            }
+        });
+        
+        _cancelButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                CancelButtonActionPerformed(evt);
+            }
+        });
         
         _contentPane.add(new JLabel("ID Crisis :"));
         _contentPane.add(new JLabel(_crise.getIdcrisis()));
         
-        SpringUtilities.makeGrid(_contentPane,
-                         1, 2, //rows, cols
-                         5, 5, //initialX, initialY
-                         5, 5);
+        _contentPane.add(new JLabel("Longitude :"));
+        _contentPane.add(new JTextField());
         
-        /*_layout.putConstraint(SpringLayout.WEST, _contentPane.getComponent(0), 5, SpringLayout.WEST, _contentPane);
-        _layout.putConstraint(SpringLayout.NORTH, _contentPane.getComponent(0), 5, SpringLayout.NORTH, _contentPane);
+        _contentPane.add(new JLabel("Latitude :"));
+        _contentPane.add(new JTextField());
         
-        _layout.putConstraint(SpringLayout.WEST, _contentPane.getComponent(1), 5, SpringLayout.EAST, _contentPane.getComponent(0));
-        _layout.putConstraint(SpringLayout.NORTH, _contentPane.getComponent(1), 5, SpringLayout.NORTH, _contentPane);
+        _contentPane.add(new JLabel("Time :"));
+        _contentPane.add(new JLabel(_crise.getT().toString()));
         
-        _layout.putConstraint(SpringLayout.SOUTH, _contentPane, 5, SpringLayout.SOUTH, _contentPane.getComponent(1));
-        _layout.putConstraint(SpringLayout.SOUTH, _contentPane, 5, SpringLayout.SOUTH, _contentPane.getComponent(0));
-        _layout.putConstraint(SpringLayout.EAST, _contentPane, 5, SpringLayout.EAST, _contentPane.getComponent(1));*/
+        _contentPane.add(new JLabel("Description :"));
+        _contentPane.add(new JTextArea());
+        
+        _contentPane.add(new JRadioButton("Timer :"));
+        _contentPane.add(new JTextArea());
+        
+        _contentPane.add(_okButton);
+        _contentPane.add(_cancelButton);
+        
+        pack();
+    }
+    
+    private void OKButtonActionPerformed(ActionEvent evt) {
+        //TODO
+        this.dispose();
+    }
+    
+    private void CancelButtonActionPerformed(ActionEvent evt) {
+        this.dispose();
     }
     
 }
