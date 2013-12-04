@@ -28,6 +28,7 @@ create table Routeplan(
     idcrisis varchar(10),
     nbpolicevehicule int not null,
     nbfirevehicule int not null,
+    nomroute varchar(15) not null,
     constraint routeplanidcrisis_pk primary key(idcrisis),
     constraint routeplan_fk_1 foreign key(idcrisis) references Crisis(idcrisis) on delete cascade
 );
@@ -45,7 +46,7 @@ create table Vehicule(
 create table Route(
     idvehicule varchar(10),
     idcrisis varchar(10),
-    nomroute varchar(15) not null,
+    plop varchar(1),
     constraint routeidcrisis_pk primary key(idcrisis,idvehicule),
     constraint route_fk_1 foreign key(idcrisis) references Crisis(idcrisis) on delete cascade,
     constraint route_fk_2 foreign key(idvehicule) references Vehicule(idvehicule) on delete cascade
