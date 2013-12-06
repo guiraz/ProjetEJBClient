@@ -4,6 +4,10 @@
  */
 package grazimba.ttsing.projetejbClient;
 
+import grazimba.ttsing.projetejb.Crisis;
+import grazimba.ttsing.projetejb.Routeplan;
+import grazimba.ttsing.projetejb.Timeoutlog;
+
 /**
  *
  * @author grazimba
@@ -26,6 +30,10 @@ public class Controller {
     
     public void RessourcesUpdated() {
         ProjetEJBClient.getView().RessourcesUpdated();
+    }
+    
+    public void AddCrisis(Crisis c, Timeoutlog t, Routeplan rt) {
+        ProjetEJBClient.getRessource().AddCrise(c, t, rt);
     }
     
 }

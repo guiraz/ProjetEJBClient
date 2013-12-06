@@ -7,16 +7,12 @@ package grazimba.ttsing.projetejbClient;
 import grazimba.ttsing.projetejb.Crisis;
 import grazimba.ttsing.projetejb.Routeplan;
 import grazimba.ttsing.projetejb.Timeoutlog;
-
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import java.math.BigInteger;
-import java.util.Date;
-import java.util.Random;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -87,6 +83,8 @@ public final class MainWindow extends javax.swing.JFrame {
         jTableVehicules.setModel(new MyTableModel(new Object [][] {}));
         jTableVehicules.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         jScrollPaneVehicules.setViewportView(jTableVehicules);
+        jScrollPaneVehicules.setSize(jScrollPaneVehicules.getSize().width, 200);
+        jScrollPaneVehicules.setMinimumSize(new Dimension(200, 200));
 
         jLabelVehicules.setText("Voitures :");
 
@@ -96,68 +94,46 @@ public final class MainWindow extends javax.swing.JFrame {
         jTextAreaDescription.setColumns(20);
         jTextAreaDescription.setRows(5);
         jScrollPaneDescription.setViewportView(jTextAreaDescription);
+        jScrollPaneDescription.setMinimumSize(new Dimension(200, 200));
 
         jButtonAddVoiture.setText("Add Voiture");
 
         jButtonRemoveVoiture.setText("Remove Voiture");
-
+        
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
+        
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabelVehicules, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPaneVehicules, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 644, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButtonQuit, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonRemoveVoiture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButtonAddVoiture, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPaneDescription)
-                            .addComponent(jComboBoxCrisis, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabelTitle)
-                                    .addComponent(jLabelDescription))
-                                .addGap(491, 491, 491)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButtonAddCrise, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelTitle)
+                    .addComponent(jComboBoxCrisis)
+                    .addComponent(jLabelDescription)
+                    .addComponent(jScrollPaneDescription)
+                    .addComponent(jLabelVehicules)
+                    .addComponent(jScrollPaneVehicules))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                    .addComponent(jButtonAddCrise)
+                    .addComponent(jButtonAddVoiture)
+                    .addComponent(jButtonRemoveVoiture)
+                    .addComponent(jButtonQuit))
         );
+        layout.linkSize(SwingConstants.HORIZONTAL, jButtonAddCrise, jButtonAddVoiture, jButtonRemoveVoiture, jButtonQuit);
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabelTitle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxCrisis, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAddCrise))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabelDescription)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPaneDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabelVehicules)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPaneVehicules, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 35, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButtonAddVoiture)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButtonRemoveVoiture)
-                        .addGap(73, 73, 73)
-                        .addComponent(jButtonQuit)))
-                .addContainerGap())
+                layout.createSequentialGroup()
+                    .addComponent(jLabelTitle)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(jComboBoxCrisis)
+                        .addComponent(jButtonAddCrise))
+                    .addComponent(jLabelDescription)
+                    .addComponent(jScrollPaneDescription)
+                    .addComponent(jLabelVehicules)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPaneVehicules)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButtonAddVoiture)
+                            .addComponent(jButtonRemoveVoiture)))
+                    .addComponent(jButtonQuit)
         );
 
         if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE)
@@ -177,7 +153,6 @@ public final class MainWindow extends javax.swing.JFrame {
     
     private void jButtonAddCrisePerformed(java.awt.event.ActionEvent evt) {
         AddCrisisFrame acf = new AddCrisisFrame();
-        acf.setVisible(true);
     }
 
 
@@ -227,7 +202,7 @@ public final class MainWindow extends javax.swing.JFrame {
         }
         
         
-        Object[][] data = new Object[res.getVehicules().size()][4];
+        /*Object[][] data = new Object[res.getVehicules().size()][4];
         for(int i = 0; i<res.getVehicules().size(); i++) {
             System.out.println("vehicule : " + i);
             data[i][0] = res.getVehicule(i).getIdvehicule();
@@ -237,7 +212,7 @@ public final class MainWindow extends javax.swing.JFrame {
         }
         String[] columnNames =  {"ID Vehicule", "Date d'arrivée estimée", "Position", "Type"};
         
-        jTableVehicules = new JTable(new MyTableModel((data)));
+        jTableVehicules = new JTable(new MyTableModel((data)));*/
     }
     
     
@@ -291,96 +266,4 @@ class MyTableModel extends AbstractTableModel {
     public boolean isCellEditable(int row, int column) {
        return false;
     }
-}
-
-
-class AddCrisisFrame extends JFrame {
-    
-    private Crisis _crise;
-    private Routeplan _rp;
-    private Timeoutlog _tol;
-    
-    private JPanel _contentPane;
-    private GridLayout _layout;
-    private JButton _okButton;
-    private JButton _cancelButton;
-    
-    public AddCrisisFrame() {
-        _crise = new Crisis();
-        _rp = new Routeplan();
-        _tol = new Timeoutlog();
-        
-        BigInteger bi = new BigInteger(130, new Random());
-        _crise.setIdcrisis(bi.toString(32).substring(0, 9));
-        _rp.setIdcrisis(_crise.getIdcrisis());
-        _tol.setIdcrisis(_crise.getIdcrisis());
-        
-        _crise.setT(new Date());
-        System.out.println(_crise.getT());
-        
-        _rp.setNbfirevehicule(0);
-        _rp.setNbpolicevehicule(0);
-        
-        initLayout();
-
-        this.pack();
-    }
-    
-    private void initLayout() {
-        _contentPane = (JPanel) this.getContentPane();
-        _layout = new GridLayout(7,2);
-        _contentPane.setLayout(_layout);
-        
-        _okButton = new JButton("OK");
-        _cancelButton = new JButton("Cancel");
-        
-        _okButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                OKButtonActionPerformed(evt);
-            }
-        });
-        
-        _cancelButton.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
-            }
-        });
-        
-        _contentPane.add(new JLabel("ID Crisis :"));
-        _contentPane.add(new JLabel(_crise.getIdcrisis()));
-        
-        _contentPane.add(new JLabel("Longitude :"));
-        _contentPane.add(new JTextField());
-        
-        _contentPane.add(new JLabel("Latitude :"));
-        _contentPane.add(new JTextField());
-        
-        _contentPane.add(new JLabel("Time :"));
-        _contentPane.add(new JLabel(_crise.getT().toString()));
-        
-        _contentPane.add(new JLabel("Description :"));
-        _contentPane.add(new JTextArea());
-        
-        _contentPane.add(new JRadioButton("Timer :"));
-        _contentPane.add(new JTextArea());
-        
-        _contentPane.add(_okButton);
-        _contentPane.add(_cancelButton);
-        
-        pack();
-    }
-    
-    private void OKButtonActionPerformed(ActionEvent evt) {
-        //TODO
-        this.dispose();
-    }
-    
-    private void CancelButtonActionPerformed(ActionEvent evt) {
-        this.dispose();
-    }
-    
 }

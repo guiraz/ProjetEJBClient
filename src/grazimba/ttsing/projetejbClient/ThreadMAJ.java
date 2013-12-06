@@ -25,7 +25,7 @@ public class ThreadMAJ extends Thread{
     public void run() {
         while(_isActive) {
             
-            ProjetEJBClient.getRessource().updateRessources();
+            ProjetEJBClient.getRessource().UpdateRessources();
             ProjetEJBClient.getCont().RessourcesUpdated();
 
             try {

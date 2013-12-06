@@ -19,7 +19,6 @@ public class ProjetEJBClient {
     public static void main(String[] args) {
         _typeProgram = PROGRAM_CLIENT.POLICE;
         _mw = new MainWindow();
-        _model = new Model();
         _tMAJ = new ThreadMAJ();
         _cont = new Controller();
         _ressource = new Ressources();
@@ -40,10 +39,7 @@ public class ProjetEJBClient {
     public static ThreadMAJ getThreadMAJ() {
         return _tMAJ;
     }
-    
-    public static Model getModel() {
-        return _model;
-    }
+
     
     public static PROGRAM_CLIENT getTypeProgram() {
         return _typeProgram;
@@ -57,7 +53,6 @@ public class ProjetEJBClient {
     private static Ressources _ressource;
     private static ThreadMAJ _tMAJ;
     private static Controller _cont;
-    private static Model _model;
     private static PROGRAM_CLIENT _typeProgram;
     
 }

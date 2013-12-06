@@ -53,12 +53,20 @@ public class Ressources {
     /**
      * @desc Call by ThreadMAJ, update ressources from db
      */
-    public void updateRessources() {
+    synchronized public void UpdateRessources() {
         setCrises(_crise.findAll());
         setVehicules(_vf.findAll());
         setTols(_tl.findAll());
         setRoutes(_rt.findAll());
         setToutePlans(_rp.findAll());
+    }
+    
+    public void AddCrise(Crisis c, Timeoutlog t, Routeplan rt) {
+        _crise.create(c);
+        if(t != null)
+            _tl.create(t);
+        _rp.create(rt);
+        UpdateRessources();
     }
 
     
@@ -78,7 +86,7 @@ public class Ressources {
     /**
      * @param crises the crises to set
      */
-    public void setCrises(List<Crisis> crises) {
+    private void setCrises(List<Crisis> crises) {
         this.crises = crises;
     }
     
@@ -92,7 +100,7 @@ public class Ressources {
     /**
      * @param crise the crise to set
      */
-    public void setCrise(Crisis crise) {
+    private void setCrise(Crisis crise) {
         crises.add(crise);
     }
     
@@ -113,7 +121,7 @@ public class Ressources {
     /**
      * @param routes the routes to set
      */
-    public void setRoutes(List<Route> routes) {
+    private void setRoutes(List<Route> routes) {
         this.routes = routes;
     }
     
@@ -127,7 +135,7 @@ public class Ressources {
     /**
      * @param route the route to set
      */
-    public void setRoute(Route route) {
+    private void setRoute(Route route) {
         this.routes.add(route);
     }
     
@@ -149,7 +157,7 @@ public class Ressources {
     /**
      * @param toutePlan the toutePlans to set
      */
-    public void setToutePlans(List<Routeplan> toutePlan) {
+    private void setToutePlans(List<Routeplan> toutePlan) {
         this.toutePlan = toutePlan;
     }
     
@@ -163,7 +171,7 @@ public class Ressources {
     /**
      * @param toutePlan the toutePlan to set
      */
-    public void setToutePlan(Routeplan toutePlan) {
+    private void setToutePlan(Routeplan toutePlan) {
         this.toutePlan.add(toutePlan);
     }
     
@@ -185,7 +193,7 @@ public class Ressources {
     /**
      * @param tol the tols to set
      */
-    public void setTols(List<Timeoutlog> tol) {
+    private void setTols(List<Timeoutlog> tol) {
         this.tol = tol;
     }
     
@@ -199,7 +207,7 @@ public class Ressources {
     /**
      * @param tol the tol to set
      */
-    public void setTol(Timeoutlog tol) {
+    private void setTol(Timeoutlog tol) {
         this.tol.add(tol);
     }
     
@@ -221,7 +229,7 @@ public class Ressources {
     /**
      * @param vehicule the vehicules to set
      */
-    public void setVehicules(List<Vehicule> vehicule) {
+    private void setVehicules(List<Vehicule> vehicule) {
         this.vehicule = vehicule;
     }
     
@@ -235,7 +243,7 @@ public class Ressources {
     /**
      * @param vehicule the vehicule to set
      */
-    public void setVehicule(Vehicule vehicule) {
+    private void setVehicule(Vehicule vehicule) {
         this.vehicule.add(vehicule);
     }
     
