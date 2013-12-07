@@ -51,7 +51,7 @@ class AddCrisisFrame extends JFrame {
         BigInteger bi = new BigInteger(130, new Random());
         _crise.setIdcrisis(bi.toString(32).substring(0, 9));
         _rp.setIdcrisis(_crise.getIdcrisis());
-        _tol.setCrisis(_crise);
+        _tol.setIdcrisis(_crise.getIdcrisis());
         
         _crise.setT(new Date());
         System.out.println(_crise.getT());
@@ -74,7 +74,7 @@ class AddCrisisFrame extends JFrame {
         
         _okButton = new JButton("OK");
         _cancelButton = new JButton("Cancel");
-        _timerRadioButton = new JRadioButton("Timer : ");
+        _timerRadioButton = new JRadioButton("Timer (en minutes) : ");
         _timerRadioButton.setSelected(true);
         
         _longitudeTextField = new JTextField();
@@ -115,7 +115,7 @@ class AddCrisisFrame extends JFrame {
         _contentPane.add(new JLabel("Latitude :"));
         _contentPane.add(_latitudeTextField);
         
-        _contentPane.add(new JLabel("Timer (en minutes) :"));
+        _contentPane.add(new JLabel("Heures :"));
         _contentPane.add(new JLabel(_crise.getT().toString()));
         
         _contentPane.add(new JLabel("Description :"));
@@ -147,7 +147,6 @@ class AddCrisisFrame extends JFrame {
                     Date date = new Date();
                     date.setTime(_crise.getT().getTime() + Integer.parseInt(_timerTextField.getText()) * 60000);
                     _tol.setD(date);
-                    _crise.setTimeoutlog(_tol);
                     
                     ProjetEJBClient.getCont().AddCrisis(_crise, _tol, _rp);
                 

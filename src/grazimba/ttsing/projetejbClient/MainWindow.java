@@ -140,6 +140,8 @@ public final class MainWindow extends javax.swing.JFrame {
         jLabelTitle.setText("Police Station");
         else
         jLabelTitle.setText("Fire Station");
+        
+        setSize(800, 500);
 
         pack();
     }
@@ -184,7 +186,7 @@ public final class MainWindow extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new MainWindow().setVisible(true);
+                setVisible(true);
             }
         });
     }
