@@ -31,7 +31,6 @@ class AddCrisisFrame extends JFrame {
     private Crisis _crise;
     private Routeplan _rp;
     private Timeoutlog _tol;
-    
     private JPanel _contentPane;
     private GridLayout _layout;
     private JButton _okButton;
@@ -139,18 +138,30 @@ class AddCrisisFrame extends JFrame {
             {
                 if(!_timerTextField.getText().isEmpty())
                 {
-                    _crise.setLongitude(Float.parseFloat(_longitudeTextField.getText()));
-                    _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
-                    if(_descTextArea.getText().isEmpty())
-                        _crise.setDescription(_descTextArea.getText());
-                    
-                    Date date = new Date();
-                    date.setTime(_crise.getT().getTime() + Integer.parseInt(_timerTextField.getText()) * 60000);
-                    _tol.setD(date);
-                    
-                    ProjetEJBClient.getCont().AddCrisis(_crise, _tol, _rp);
-                
-                    this.dispose();
+                    try{
+                        _crise.setLongitude(Float.parseFloat(_longitudeTextField.getText()));
+                        _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
+                        if( (_crise.getLongitude()>= -180 &&  _crise.getLongitude() <= 180) && (_crise.getLatitude() >= -90 && _crise.getLatitude() <= 90) )
+                        {
+                            if(_descTextArea.getText().isEmpty())
+                                _crise.setDescription(_descTextArea.getText());
+
+                            Date date = new Date();
+                            date.setTime(_crise.getT().getTime() + Integer.parseInt(_timerTextField.getText()) * 60000);
+                            _tol.setD(date);
+
+                            ProjetEJBClient.getCont().AddCrisis(_crise, _tol, _rp);
+
+                            this.dispose();
+                        }
+                        else
+                        {
+                             JOptionPane.showMessageDialog(this, "Longitude [-180,180] et Latitude [-90,90] ", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+                        }  
+                    }
+                    catch (NumberFormatException e){
+                        JOptionPane.showMessageDialog(this, "Les champs longitude, latitude et timer doivent etre des nombres", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
                 else
                 {
