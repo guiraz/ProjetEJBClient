@@ -43,7 +43,6 @@ public class Controller {
     }
     
     public void AddRoute(Route r){
-        System.out.println("Cont Route");
         ProjetEJBClient.getRessource().AddRoute(r);
     }
 }
