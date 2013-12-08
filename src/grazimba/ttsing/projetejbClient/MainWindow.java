@@ -11,9 +11,11 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -58,8 +60,17 @@ public final class MainWindow extends javax.swing.JFrame {
         jTextAreaDescription = new javax.swing.JTextArea();
         jButtonAddVoiture = new javax.swing.JButton();
         jButtonRemoveVoiture = new javax.swing.JButton();
+        _currentCrisis = new Integer(-1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        
+        jComboBoxCrisis.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                CrisisComboBoxItemChanged(evt);
+            }
+        });
 
         jLabelTitle.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
         jLabelTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -148,8 +159,6 @@ public final class MainWindow extends javax.swing.JFrame {
         jLabelTitle.setText("Police Station");
         else
         jLabelTitle.setText("Fire Station");
-        
-        setSize(800, 500);
 
         pack();
     }
@@ -167,6 +176,11 @@ public final class MainWindow extends javax.swing.JFrame {
 
     private void jButtonAddVoiturePerformed(ActionEvent evt){
         AddVoitureFrame avf = new AddVoitureFrame();
+    }
+    
+    private void CrisisComboBoxItemChanged(ActionEvent evt) {
+        _currentCrisis = jComboBoxCrisis.getSelectedIndex();
+        RessourcesUpdated();
     }
     
     public void launch() {
@@ -208,10 +222,35 @@ public final class MainWindow extends javax.swing.JFrame {
         
         Ressources res = ProjetEJBClient.getRessource();
         
+        Integer current = _currentCrisis;
         jComboBoxCrisis.removeAllItems();
         for(int i = 0; i<res.getCrises().size(); i++) {
             if(res.getCrise(i).getStatut().equals("Active"))
                 jComboBoxCrisis.addItem(res.getCrise(i).getIdcrisis());
+        }
+        _currentCrisis = current;
+        jComboBoxCrisis.setSelectedIndex(_currentCrisis);
+        
+        if(_currentCrisis != -1) {
+            jTextAreaDescription.setText(null);
+            jTextAreaDescription.append("Position : " + res.getCrise(_currentCrisis).getLongitude() + "; " + res.getCrise(_currentCrisis).getLatitude() + "\r\n" + "\r\n");
+            jTextAreaDescription.append("Heure de début : " + res.getCrise(_currentCrisis).getT() + "\r\n" + "\r\n");
+            
+            Integer timeOutId = -1;
+            for(int i=0; i<res.getTols().size(); i++) {
+                System.err.println();
+                if(res.getCrise(_currentCrisis).getIdcrisis().equals(res.getTol(i).getIdcrisis())) {
+                    timeOutId = i;
+                }
+            }   
+            
+            if(timeOutId != -1) {
+                Date cd = new Date();
+                long minutes = res.getTol(timeOutId).getD().getTime() - cd.getTime();
+                minutes /= 60000;
+                jTextAreaDescription.append("Timer : " + minutes + " minutes" + "\r\n" + "\r\n");
+            }
+            jTextAreaDescription.append("Description : " + res.getCrise(_currentCrisis).getDescription());
         }
         
         
@@ -241,6 +280,8 @@ public final class MainWindow extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPaneDescription;
     private javax.swing.JTable jTableVehicules;
     private javax.swing.JTextArea jTextAreaDescription;
+    
+    private Integer _currentCrisis;
 }
 
 
