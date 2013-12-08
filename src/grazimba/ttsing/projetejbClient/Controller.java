@@ -7,6 +7,7 @@ package grazimba.ttsing.projetejbClient;
 import grazimba.ttsing.projetejb.Crisis;
 import grazimba.ttsing.projetejb.Routeplan;
 import grazimba.ttsing.projetejb.Timeoutlog;
+import grazimba.ttsing.projetejb.Vehicule;
 
 /**
  *
@@ -36,4 +37,7 @@ public class Controller {
         ProjetEJBClient.getRessource().AddCrise(c, t, rt);
     }
     
+    public void AddVoiture(Vehicule v){
+        ProjetEJBClient.getRessource().AddVehicule(v);
+    }
 }

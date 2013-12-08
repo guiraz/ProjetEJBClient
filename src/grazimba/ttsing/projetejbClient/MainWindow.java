@@ -10,6 +10,7 @@ import grazimba.ttsing.projetejb.Timeoutlog;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -97,6 +98,13 @@ public final class MainWindow extends javax.swing.JFrame {
         jScrollPaneDescription.setMinimumSize(new Dimension(200, 200));
 
         jButtonAddVoiture.setText("Add Voiture");
+        jButtonAddVoiture.addActionListener(new java.awt.event.ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonAddVoiturePerformed(e);
+            }
+        });
 
         jButtonRemoveVoiture.setText("Remove Voiture");
         
@@ -157,7 +165,10 @@ public final class MainWindow extends javax.swing.JFrame {
         AddCrisisFrame acf = new AddCrisisFrame();
     }
 
-
+    private void jButtonAddVoiturePerformed(ActionEvent evt){
+        AddVoitureFrame avf = new AddVoitureFrame();
+    }
+    
     public void launch() {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

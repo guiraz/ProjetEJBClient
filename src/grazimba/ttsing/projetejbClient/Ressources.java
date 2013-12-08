@@ -69,7 +69,10 @@ public class Ressources {
         UpdateRessources();
     }
 
-    
+    public void AddVehicule(Vehicule v){
+        _vf.create(v);
+        UpdateRessources();
+    }
     
     
     /**

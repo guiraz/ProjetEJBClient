@@ -60,7 +60,7 @@ class AddCrisisFrame extends JFrame {
         _rp.setNbfirevehicule(0);
         _rp.setNbpolicevehicule(0);
         _rp.setNomroute(null);
-        
+        setTitle("add Crisis");
         initLayout();
 
         this.pack();
@@ -138,7 +138,8 @@ class AddCrisisFrame extends JFrame {
             {
                 if(!_timerTextField.getText().isEmpty())
                 {
-                    try{
+                    try
+                    {
                         _crise.setLongitude(Float.parseFloat(_longitudeTextField.getText()));
                         _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
                         if( (_crise.getLongitude()>= -180 &&  _crise.getLongitude() <= 180) && (_crise.getLatitude() >= -90 && _crise.getLatitude() <= 90) )
