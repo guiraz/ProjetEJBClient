@@ -74,6 +74,10 @@ public class Ressources {
         UpdateRessources();
     }
     
+    public void AddRoute(Route r){
+        _rt.create(r);
+        UpdateRessources();
+    }
     
     /**
      * Crisis

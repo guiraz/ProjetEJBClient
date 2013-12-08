@@ -6,6 +6,7 @@ package grazimba.ttsing.projetejbClient;
 
 import grazimba.ttsing.projetejb.Crisis;
 import grazimba.ttsing.projetejb.Routeplan;
+import grazimba.ttsing.projetejb.Route;
 import grazimba.ttsing.projetejb.Timeoutlog;
 import grazimba.ttsing.projetejb.Vehicule;
 
@@ -39,5 +40,10 @@ public class Controller {
     
     public void AddVoiture(Vehicule v){
         ProjetEJBClient.getRessource().AddVehicule(v);
+    }
+    
+    public void AddRoute(Route r){
+        System.out.println("Cont Route");
+        ProjetEJBClient.getRessource().AddRoute(r);
     }
 }

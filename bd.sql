@@ -54,6 +54,9 @@ create table Route(
 
 insert into Vehicule values ('0001AA64', NULL, 'Station', 'Police');
 insert into Vehicule values ('0002AA64', NULL, 'Station', 'Fire');
-insert into Vehicule values ('0003AA64', NULL, 'Station', 'Police');
-insert into Vehicule values ('0004AA64', NULL, 'Station', 'Fire');
-insert into Vehicule values ('0005AA64', NULL, 'Station', 'Police');
+insert into Vehicule values ('0003AA64', NULL, 'ERTL', 'Police');
+insert into Vehicule values ('0004AA64', NULL, 'ERTL', 'Fire');
+insert into Vehicule values ('0005AA64', NULL, 'AL', 'Police');
+insert into Vehicule values ('0006AA64', NULL, 'AL', 'Fire');
+insert into Vehicule values ('0007AA64', NULL, 'ERTS', 'Police');
+insert into Vehicule values ('0008AA64', NULL, 'ERTS', 'Fire');

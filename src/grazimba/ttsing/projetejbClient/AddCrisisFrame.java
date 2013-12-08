@@ -144,7 +144,7 @@ class AddCrisisFrame extends JFrame {
                         _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
                         if( (_crise.getLongitude()>= -180 &&  _crise.getLongitude() <= 180) && (_crise.getLatitude() >= -90 && _crise.getLatitude() <= 90) )
                         {
-                            if(_descTextArea.getText().isEmpty())
+                            if(!_descTextArea.getText().isEmpty())
                                 _crise.setDescription(_descTextArea.getText());
 
                             Date date = new Date();
@@ -173,7 +173,7 @@ class AddCrisisFrame extends JFrame {
             {
                 _crise.setLongitude(Float.parseFloat(_longitudeTextField.getText()));
                 _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
-                if(_descTextArea.getText().isEmpty())
+                if(!_descTextArea.getText().isEmpty())
                     _crise.setDescription(_descTextArea.getText());
                 ProjetEJBClient.getCont().AddCrisis(_crise, null, _rp);
                 
