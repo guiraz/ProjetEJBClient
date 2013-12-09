@@ -93,7 +93,7 @@ public final class MainWindow extends javax.swing.JFrame {
         });
 
         jTableVehicules.setModel(new MyTableModel(new Object [][] {}));
-        jTableVehicules.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        jTableVehicules.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPaneVehicules.setViewportView(jTableVehicules);
         jScrollPaneVehicules.setSize(jScrollPaneVehicules.getSize().width, 200);
         jScrollPaneVehicules.setMinimumSize(new Dimension(200, 200));
@@ -186,11 +186,6 @@ public final class MainWindow extends javax.swing.JFrame {
     }
     
     public void launch() {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -207,9 +202,8 @@ public final class MainWindow extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MainWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -257,20 +251,21 @@ public final class MainWindow extends javax.swing.JFrame {
                 jTextAreaDescription.append("Timer : " + minutes + " minutes" + "\r\n" + "\r\n");
             }
             jTextAreaDescription.append("Description : " + res.getCrise(_currentCrisis).getDescription());
+            
+            jTableVehicules.removeAll();
+            Object[][] data = new Object[res.getVehicules().size()][4];
+            int itVehicule = 0;
+            for(int i = 0; i<res.getRoutes().size(); i++) {
+                if(res.getRoute(i).getRoutePK().getIdcrisis().equals(res.getCrise(_currentCrisis).getIdcrisis())) {
+                    data[itVehicule][0] = res.getVehicule(i).getIdvehicule();
+                    data[itVehicule][1] = res.getVehicule(i).getEta();
+                    data[itVehicule][2] = res.getVehicule(i).getPosition();
+                    data[itVehicule][3] = res.getVehicule(i).getType();
+                    itVehicule ++;
+                }
+            }
+            jTableVehicules.setModel(new MyTableModel(data));
         }
-        
-        
-        /*Object[][] data = new Object[res.getVehicules().size()][4];
-        for(int i = 0; i<res.getVehicules().size(); i++) {
-            System.out.println("vehicule : " + i);
-            data[i][0] = res.getVehicule(i).getIdvehicule();
-            data[i][1] = res.getVehicule(i).getEta();
-            data[i][2] = res.getVehicule(i).getPosition();
-            data[i][3] = res.getVehicule(i).getType();
-        }
-        String[] columnNames =  {"ID Vehicule", "Date d'arrivée estimée", "Position", "Type"};
-        
-        jTableVehicules = new JTable(new MyTableModel((data)));*/
     }
     
     

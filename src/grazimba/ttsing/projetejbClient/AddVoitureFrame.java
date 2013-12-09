@@ -84,12 +84,23 @@ public class AddVoitureFrame extends JFrame {
     private void recupVehi(){
         for(int i = 0 ;  i < ProjetEJBClient.getRessource().getVehicules().size() ; i++ )
         {
-            if( (ProjetEJBClient.getRessource().getVehicules().get(i).getType().toString().compareTo("Police") == 0) )
-            {
-                if(ProjetEJBClient.getRessource().getVehicules().get(i).getPosition().toString().compareTo("Station") == 0 || 
-                        ProjetEJBClient.getRessource().getVehicules().get(i).getPosition().toString().compareTo("ERTS") == 0 )
-                    _vehiList.addItem(ProjetEJBClient.getRessource().getVehicules().get(i).getIdvehicule().toString());
-            }   
+            boolean find = false;
+            for(int j = 0; j<ProjetEJBClient.getRessource().getRoutes().size(); j++)
+                if(ProjetEJBClient.getRessource().getRoute(j).getRoutePK().getIdvehicule().equals(ProjetEJBClient.getRessource().getVehicule(i)))
+                    find = true;
+            
+            if(!find) {
+                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE) {
+                    String tempPosition = ProjetEJBClient.getRessource().getVehicules().get(i).getPosition();
+                    if((tempPosition.equals("Station") || tempPosition.equals("ERTS")) && ProjetEJBClient.getRessource().getVehicules().get(i).getType().equals("Police") )
+                        _vehiList.addItem(ProjetEJBClient.getRessource().getVehicules().get(i).getIdvehicule().toString());
+                }
+                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) {
+                    String tempPosition = ProjetEJBClient.getRessource().getVehicules().get(i).getPosition();
+                    if((tempPosition.equals("Station") || tempPosition.equals("ERTS")) && ProjetEJBClient.getRessource().getVehicules().get(i).getType().equals("Fire") )
+                        _vehiList.addItem(ProjetEJBClient.getRessource().getVehicules().get(i).getIdvehicule().toString());
+                } 
+            }
         }
     }
     
@@ -119,7 +130,7 @@ public class AddVoitureFrame extends JFrame {
                 else
                     JOptionPane.showMessageDialog(this, "Le vehicule choisi est deja attribuer a une crise", " Erreur ", JOptionPane.ERROR_MESSAGE);
             }
-        }           
+        }
     }
     
     private void CancelButtonActionPerformed(ActionEvent evt) {
