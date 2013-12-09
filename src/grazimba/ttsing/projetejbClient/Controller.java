@@ -45,4 +45,8 @@ public class Controller {
     public void AddRoute(Route r){
         ProjetEJBClient.getRessource().AddRoute(r);
     }
+    
+    public void RemoveRoute(Route r){
+        ProjetEJBClient.getRessource().RemoveRoute(r);
+    }
 }

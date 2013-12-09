@@ -79,6 +79,11 @@ public class Ressources {
         UpdateRessources();
     }
     
+    public void RemoveRoute(Route r){
+        _rt.remove(r);
+        UpdateRessources();
+    }
+    
     /**
      * Crisis
      * /

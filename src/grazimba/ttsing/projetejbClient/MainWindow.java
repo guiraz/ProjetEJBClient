@@ -118,6 +118,13 @@ public final class MainWindow extends javax.swing.JFrame {
         });
 
         jButtonRemoveVoiture.setText("Remove Voiture");
+        jButtonRemoveVoiture.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonRemoveVoiturePerformed(e);
+            }
+        });
         
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -180,6 +187,11 @@ public final class MainWindow extends javax.swing.JFrame {
         AddVoitureFrame avf = new AddVoitureFrame();
     }
     
+    private void jButtonRemoveVoiturePerformed(ActionEvent evt){
+        RemoveVoiture rv = new RemoveVoiture();
+        rv.Remove();
+    }
+    
     private void CrisisComboBoxItemChanged(ActionEvent evt) {
         _currentCrisis = jComboBoxCrisis.getSelectedIndex();
         RessourcesUpdated();
@@ -212,9 +224,6 @@ public final class MainWindow extends javax.swing.JFrame {
         });
     }
     
-    public JComboBox getComboBoxCrisis(){
-        return jComboBoxCrisis;
-    }
     
     public void RessourcesUpdated(){
         
@@ -254,20 +263,37 @@ public final class MainWindow extends javax.swing.JFrame {
             
             jTableVehicules.removeAll();
             Object[][] data = new Object[res.getVehicules().size()][4];
-            int itVehicule = 0;
+            itVehicule = 0;
+            
             for(int i = 0; i<res.getRoutes().size(); i++) {
                 if(res.getRoute(i).getRoutePK().getIdcrisis().equals(res.getCrise(_currentCrisis).getIdcrisis())) {
-                    data[itVehicule][0] = res.getVehicule(i).getIdvehicule();
-                    data[itVehicule][1] = res.getVehicule(i).getEta();
-                    data[itVehicule][2] = res.getVehicule(i).getPosition();
-                    data[itVehicule][3] = res.getVehicule(i).getType();
-                    itVehicule ++;
+                    for(int j = 0; j<res.getVehicules().size(); j++){
+                        if(res.getVehicule(j).getIdvehicule().equals(res.getRoute(i).getRoutePK().getIdvehicule())){
+                            data[itVehicule][0] = res.getVehicule(j).getIdvehicule();
+                            data[itVehicule][1] = res.getVehicule(j).getEta();
+                            data[itVehicule][2] = res.getVehicule(j).getPosition();
+                            data[itVehicule][3] = res.getVehicule(j).getType();
+                            itVehicule ++;
+                        }
+                    }
                 }
             }
             jTableVehicules.setModel(new MyTableModel(data));
         }
     }
     
+    
+    public JComboBox getComboBoxCrisis(){
+        return jComboBoxCrisis;
+    }
+    
+    public JTable getJTableVehicules(){
+        return jTableVehicules;
+    }
+    
+    public int getNbVehicule(){
+        return itVehicule;
+    }
     
     private javax.swing.JButton jButtonQuit;
     private javax.swing.JButton jButtonAddCrise;
@@ -283,6 +309,7 @@ public final class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextAreaDescription;
     
     private Integer _currentCrisis;
+    private int itVehicule;
 }
 
 class MyTableModel extends AbstractTableModel {

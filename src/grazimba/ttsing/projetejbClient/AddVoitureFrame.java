@@ -108,7 +108,7 @@ public class AddVoitureFrame extends JFrame {
         String idcrisis =  ProjetEJBClient.getView().getComboBoxCrisis().getSelectedItem().toString();
         for(int i = 0 ; i < ProjetEJBClient.getRessource().getCrises().size() ; i++)
         {
-            if(ProjetEJBClient.getRessource().getCrises().get(i).getIdcrisis().toString().compareTo(idcrisis) == 0)
+            if(ProjetEJBClient.getRessource().getCrises().get(i).getIdcrisis().toString().equals(idcrisis))
             {
                 RoutePK rpk = new RoutePK(_vehiList.getSelectedItem().toString(),idcrisis);
                 Route r = new Route(rpk);
