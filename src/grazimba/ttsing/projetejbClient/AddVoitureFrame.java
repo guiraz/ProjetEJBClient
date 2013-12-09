@@ -85,10 +85,10 @@ public class AddVoitureFrame extends JFrame {
         for(int i = 0 ;  i < ProjetEJBClient.getRessource().getVehicules().size() ; i++ )
         {
             boolean find = false;
-            for(int j = 0; j<ProjetEJBClient.getRessource().getRoutes().size(); j++)
-                if(ProjetEJBClient.getRessource().getRoute(j).getRoutePK().getIdvehicule().equals(ProjetEJBClient.getRessource().getVehicule(i)))
+            for(int j = 0; j<ProjetEJBClient.getRessource().getRoutes().size(); j++){
+                if(ProjetEJBClient.getRessource().getRoute(j).getRoutePK().getIdvehicule().equals(ProjetEJBClient.getRessource().getVehicule(i).getIdvehicule()))
                     find = true;
-            
+            }
             if(!find) {
                 if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE) {
                     String tempPosition = ProjetEJBClient.getRessource().getVehicules().get(i).getPosition();
@@ -106,29 +106,14 @@ public class AddVoitureFrame extends JFrame {
     
     private void OKButtonActionPerformed(ActionEvent evt){
         String idcrisis =  ProjetEJBClient.getView().getComboBoxCrisis().getSelectedItem().toString();
-        String idvehi = _vehiList.getSelectedItem().toString();
-        boolean find=false;
         for(int i = 0 ; i < ProjetEJBClient.getRessource().getCrises().size() ; i++)
         {
             if(ProjetEJBClient.getRessource().getCrises().get(i).getIdcrisis().toString().compareTo(idcrisis) == 0)
-            { 
-                /* Check if our Routes containt something */
-                if(ProjetEJBClient.getRessource().getRoutes().size() > 0)
-                {
-                    for(int j = 0 ; j < ProjetEJBClient.getRessource().getRoutes().size() ; j++){
-                        /* Check if the vehicule is already used */
-                        if(ProjetEJBClient.getRessource().getRoutes().get(j).getRoutePK().getIdvehicule().compareTo(idvehi) == 0 )
-                            find=true; 
-                    }
-                }
-                if(!find){
-                    RoutePK rpk = new RoutePK(_vehiList.getSelectedItem().toString(),idcrisis);
-                    Route r = new Route(rpk);
-                    ProjetEJBClient.getCont().AddRoute(r);
-                    this.dispose();
-                }
-                else
-                    JOptionPane.showMessageDialog(this, "Le vehicule choisi est deja attribuer a une crise", " Erreur ", JOptionPane.ERROR_MESSAGE);
+            {
+                RoutePK rpk = new RoutePK(_vehiList.getSelectedItem().toString(),idcrisis);
+                Route r = new Route(rpk);
+                ProjetEJBClient.getCont().AddRoute(r);
+                this.dispose();
             }
         }
     }
