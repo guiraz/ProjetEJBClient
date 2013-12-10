@@ -9,7 +9,7 @@ enum PROGRAM_CLIENT {FIRE, POLICE};
 
 /**
  *
- * @author grazimba
+ * @author grazimba & ttsing
  */
 public class ProjetEJBClient {
 

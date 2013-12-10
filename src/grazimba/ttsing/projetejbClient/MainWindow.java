@@ -4,17 +4,12 @@
  */
 package grazimba.ttsing.projetejbClient;
 
-import grazimba.ttsing.projetejb.Crisis;
+
 import grazimba.ttsing.projetejb.Route;
 import grazimba.ttsing.projetejb.RoutePK;
-import grazimba.ttsing.projetejb.Routeplan;
-import grazimba.ttsing.projetejb.Timeoutlog;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Date;
@@ -25,7 +20,7 @@ import javax.swing.table.AbstractTableModel;
 
 /**
  *
- * @author grazimba
+ * @author grazimba & ttsing
  */
 public final class MainWindow extends javax.swing.JFrame {
 
@@ -50,18 +45,20 @@ public final class MainWindow extends javax.swing.JFrame {
 
     private void initComponents() {
 
-        jLabelTitle = new javax.swing.JLabel();
-        jButtonQuit = new javax.swing.JButton();
-        jComboBoxCrisis = new javax.swing.JComboBox();
-        jButtonAddCrise = new javax.swing.JButton();
-        jScrollPaneVehicules = new javax.swing.JScrollPane();
-        jTableVehicules = new javax.swing.JTable();
-        jLabelVehicules = new javax.swing.JLabel();
-        jLabelDescription = new javax.swing.JLabel();
-        jScrollPaneDescription = new javax.swing.JScrollPane();
-        jTextAreaDescription = new javax.swing.JTextArea();
-        jButtonAddVoiture = new javax.swing.JButton();
-        jButtonRemoveVoiture = new javax.swing.JButton();
+        jLabelTitle = new JLabel();
+        jButtonQuit = new JButton();
+        jComboBoxCrisis = new JComboBox();
+        jButtonAddCrise = new JButton();
+        jScrollPaneVehicules = new JScrollPane();
+        jTableVehicules = new JTable();
+        jLabelVehicules = new JLabel();
+        jLabelDescription = new JLabel();
+        jScrollPaneDescription = new JScrollPane();
+        jTextAreaDescription = new JTextArea();
+        jButtonAddVoiture = new JButton();
+        jButtonRemoveVoiture = new JButton();
+        jButtonAddRoute = new JButton();
+        jButtonConfRoute = new JButton();
         _currentCrisis = new Integer(-1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -75,27 +72,27 @@ public final class MainWindow extends javax.swing.JFrame {
         });
 
         jLabelTitle.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
-        jLabelTitle.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabelTitle.setHorizontalAlignment(SwingConstants.LEFT);
         jLabelTitle.setText("");
 
         jButtonQuit.setText("Quitter");
-        jButtonQuit.addActionListener(new java.awt.event.ActionListener() {
+        jButtonQuit.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 jButtonQuitActionPerformed(evt);
             }
         });
-
+        
         jButtonAddCrise.setText("Add Crise");
-        jButtonAddCrise.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAddCrise.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            public void actionPerformed(ActionEvent evt) {
                 jButtonAddCrisePerformed(evt);
             }
         });
-
+        
         jTableVehicules.setModel(new MyTableModel(new Object [][] {}));
-        jTableVehicules.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTableVehicules.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPaneVehicules.setViewportView(jTableVehicules);
         jScrollPaneVehicules.setSize(jScrollPaneVehicules.getSize().width, 200);
         jScrollPaneVehicules.setMinimumSize(new Dimension(200, 200));
@@ -111,7 +108,7 @@ public final class MainWindow extends javax.swing.JFrame {
         jScrollPaneDescription.setMinimumSize(new Dimension(200, 200));
 
         jButtonAddVoiture.setText("Add Voiture");
-        jButtonAddVoiture.addActionListener(new java.awt.event.ActionListener() {
+        jButtonAddVoiture.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,7 +125,27 @@ public final class MainWindow extends javax.swing.JFrame {
             }
         });
         
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        jButtonAddRoute.setText("Add Route");
+        jButtonAddRoute.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonAddRoutePerformed(e);
+            }
+            
+        });
+        
+        jButtonConfRoute.setText("Confirm Route");
+        jButtonConfRoute.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+        });
+        
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         
         layout.setHorizontalGroup(
@@ -142,11 +159,13 @@ public final class MainWindow extends javax.swing.JFrame {
                     .addComponent(jScrollPaneVehicules))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                     .addComponent(jButtonAddCrise)
+                    .addComponent(jButtonAddRoute)
+                    .addComponent(jButtonConfRoute)
                     .addComponent(jButtonAddVoiture)
                     .addComponent(jButtonRemoveVoiture)
                     .addComponent(jButtonQuit))
         );
-        layout.linkSize(SwingConstants.HORIZONTAL, jButtonAddCrise, jButtonAddVoiture, jButtonRemoveVoiture, jButtonQuit);
+        layout.linkSize(SwingConstants.HORIZONTAL, jButtonAddCrise, jButtonAddVoiture, jButtonRemoveVoiture, jButtonQuit,jButtonAddRoute,jButtonConfRoute);
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
                     .addComponent(jLabelTitle)
@@ -154,7 +173,11 @@ public final class MainWindow extends javax.swing.JFrame {
                         .addComponent(jComboBoxCrisis)
                         .addComponent(jButtonAddCrise))
                     .addComponent(jLabelDescription)
-                    .addComponent(jScrollPaneDescription)
+                    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPaneDescription)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButtonAddRoute)
+                            .addComponent(jButtonConfRoute)))
                     .addComponent(jLabelVehicules)
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPaneVehicules)
@@ -172,16 +195,15 @@ public final class MainWindow extends javax.swing.JFrame {
         pack();
     }
     
-    
 
-    private void jButtonQuitActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
         if(JOptionPane.showOptionDialog(null, "Voulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
             ProjetEJBClient.getCont().ExitQuery();
         }
     }
     
-    private void jButtonAddCrisePerformed(java.awt.event.ActionEvent evt) {
+    private void jButtonAddCrisePerformed(ActionEvent evt) {
         AddCrisisFrame acf = new AddCrisisFrame();
         RessourcesUpdated();
     }
@@ -201,6 +223,10 @@ public final class MainWindow extends javax.swing.JFrame {
       else{
           JOptionPane.showMessageDialog(ProjetEJBClient.getView(), "Aucune ligne selectionne", " Erreur de selection ", JOptionPane.ERROR_MESSAGE);
       }
+    }
+    
+    private void jButtonAddRoutePerformed(ActionEvent evt){
+        AddRouteFrame arf = new AddRouteFrame();
     }
     
     private void CrisisComboBoxItemChanged(ActionEvent evt) {
@@ -302,18 +328,20 @@ public final class MainWindow extends javax.swing.JFrame {
         return jComboBoxCrisis;
     }
     
-    private javax.swing.JButton jButtonQuit;
-    private javax.swing.JButton jButtonAddCrise;
-    private javax.swing.JButton jButtonAddVoiture;
-    private javax.swing.JButton jButtonRemoveVoiture;
-    private javax.swing.JComboBox jComboBoxCrisis;
-    private javax.swing.JLabel jLabelTitle;
-    private javax.swing.JLabel jLabelVehicules;
-    private javax.swing.JLabel jLabelDescription;
-    private javax.swing.JScrollPane jScrollPaneVehicules;
-    private javax.swing.JScrollPane jScrollPaneDescription;
-    private javax.swing.JTable jTableVehicules;
-    private javax.swing.JTextArea jTextAreaDescription;
+    private JButton jButtonQuit;
+    private JButton jButtonAddCrise;
+    private JButton jButtonAddVoiture;
+    private JButton jButtonRemoveVoiture;
+    private JButton jButtonAddRoute;
+    private JButton jButtonConfRoute;
+    private JComboBox jComboBoxCrisis;
+    private JLabel jLabelTitle;
+    private JLabel jLabelVehicules;
+    private JLabel jLabelDescription;
+    private JScrollPane jScrollPaneVehicules;
+    private JScrollPane jScrollPaneDescription;
+    private JTable jTableVehicules;
+    private JTextArea jTextAreaDescription;
     
     private Integer _currentCrisis;
     private int itVehicule;

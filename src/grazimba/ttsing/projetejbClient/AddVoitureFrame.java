@@ -4,31 +4,23 @@
  */
 package grazimba.ttsing.projetejbClient;
 
-import grazimba.ttsing.projetejb.Crisis;
 import grazimba.ttsing.projetejb.Route;
 import grazimba.ttsing.projetejb.RoutePK;
-import grazimba.ttsing.projetejb.Vehicule;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.math.BigInteger;
-import java.util.Random;
-import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 /**
  *
- * @author Wandy
+ * @author grazimba & ttsing
  */
 public class AddVoitureFrame extends JFrame {
-    
-    String[] _vehiTab;
     
     /* Frame */
     private JPanel _contentPane;

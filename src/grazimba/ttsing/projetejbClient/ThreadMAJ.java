@@ -10,7 +10,7 @@ import java.util.Calendar;
 
 /**
  *
- * @author grazimba
+ * @author grazimba & ttsing
  */
 public class ThreadMAJ extends Thread{
 

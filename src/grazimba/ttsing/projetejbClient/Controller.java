@@ -12,7 +12,7 @@ import grazimba.ttsing.projetejb.Vehicule;
 
 /**
  *
- * @author grazimba
+ * @author grazimba & ttsing
  */
 public class Controller {
     
@@ -48,5 +48,9 @@ public class Controller {
     
     public void RemoveRoute(Route r){
         ProjetEJBClient.getRessource().RemoveRoute(r);
+    }
+    
+    public void EditRouteplan(Routeplan rp){
+        ProjetEJBClient.getRessource().EditRouteplan(rp);
     }
 }

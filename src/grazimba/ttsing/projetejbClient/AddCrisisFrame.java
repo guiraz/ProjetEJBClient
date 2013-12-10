@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author grazimba
+ * @author grazimba & ttsing
  */
 class AddCrisisFrame extends JFrame {
     

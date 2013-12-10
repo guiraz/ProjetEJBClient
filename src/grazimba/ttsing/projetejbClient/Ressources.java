@@ -8,7 +8,7 @@ import grazimba.ttsing.projetejb.*;
 import java.util.List;
 /**
  *
- * @author grazimba
+ * @author grazimba & ttsing
  */
 public class Ressources {
     
@@ -81,6 +81,11 @@ public class Ressources {
     
     public void RemoveRoute(Route r){
         _rt.remove(r);
+        UpdateRessources();
+    }
+    
+    public void EditRouteplan(Routeplan rp){
+        _rp.edit(rp);
         UpdateRessources();
     }
     
