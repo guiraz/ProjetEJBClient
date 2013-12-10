@@ -5,6 +5,7 @@
 package grazimba.ttsing.projetejbClient;
 
 import grazimba.ttsing.projetejb.*;
+import java.util.Date;
 import java.util.List;
 /**
  *
@@ -30,7 +31,6 @@ public class Ressources {
     {
         try
         {
-            System.out.println("before context");
             _jndi_context = new javax.naming.InitialContext();
             
             _vf = (VehiculeFacadeRemote) _jndi_context.lookup("ejb/VehiculeFacade");
@@ -59,6 +59,7 @@ public class Ressources {
         setTols(_tl.findAll());
         setRoutes(_rt.findAll());
         setToutePlans(_rp.findAll());
+        ProjetEJBClient.getCont().RessourcesUpdated();
     }
     
     public void AddCrise(Crisis c, Timeoutlog t, Routeplan rt) {
@@ -82,6 +83,27 @@ public class Ressources {
     public void RemoveRoute(Route r){
         _rt.remove(r);
         UpdateRessources();
+    }
+    
+    public void setCriseClosed(String s) {
+        Date d = new Date();
+        Crisis tmpC = _crise.find(s);
+        
+        try {
+            Timeoutlog tmpTL = _tl.find(s);
+            if(d.getTime() > tmpC.getT().getTime())
+            {
+                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE)
+                    tmpTL.setPscreason(ProjetEJBClient.getCont().getReasons());
+                else
+                    tmpTL.setFscreason(ProjetEJBClient.getCont().getReasons());
+                _tl.edit(tmpTL);
+            }
+        }
+        catch( Exception e) {
+        }
+        tmpC.setStatut("Closed");
+        _crise.edit(tmpC);
     }
     
     /**

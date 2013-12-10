@@ -53,7 +53,6 @@ class AddCrisisFrame extends JFrame {
         _tol.setIdcrisis(_crise.getIdcrisis());
         
         _crise.setT(new Date());
-        System.out.println(_crise.getT());
         
         _crise.setStatut("Active");
         

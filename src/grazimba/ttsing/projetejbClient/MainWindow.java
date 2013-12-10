@@ -9,9 +9,7 @@ import grazimba.ttsing.projetejb.Route;
 import grazimba.ttsing.projetejb.RoutePK;
 import grazimba.ttsing.projetejb.Routeplan;
 import grazimba.ttsing.projetejb.Timeoutlog;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -41,6 +39,7 @@ public final class MainWindow extends javax.swing.JFrame {
         initComponents();
         
         this.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
                 ProjetEJBClient.getCont().ExitQuery();
             }
@@ -54,6 +53,7 @@ public final class MainWindow extends javax.swing.JFrame {
         jButtonQuit = new javax.swing.JButton();
         jComboBoxCrisis = new javax.swing.JComboBox();
         jButtonAddCrise = new javax.swing.JButton();
+        jButtonCloseCrise = new javax.swing.JButton();
         jScrollPaneVehicules = new javax.swing.JScrollPane();
         jTableVehicules = new javax.swing.JTable();
         jLabelVehicules = new javax.swing.JLabel();
@@ -91,6 +91,14 @@ public final class MainWindow extends javax.swing.JFrame {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAddCrisePerformed(evt);
+            }
+        });
+        
+        jButtonCloseCrise.setText("Archiver Crise");
+        jButtonCloseCrise.addActionListener(new java.awt.event.ActionListener() {
+            @Override
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCloseCrisePerformed(evt);
             }
         });
 
@@ -142,6 +150,7 @@ public final class MainWindow extends javax.swing.JFrame {
                     .addComponent(jScrollPaneVehicules))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                     .addComponent(jButtonAddCrise)
+                    .addComponent(jButtonCloseCrise)
                     .addComponent(jButtonAddVoiture)
                     .addComponent(jButtonRemoveVoiture)
                     .addComponent(jButtonQuit))
@@ -152,7 +161,9 @@ public final class MainWindow extends javax.swing.JFrame {
                     .addComponent(jLabelTitle)
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(jComboBoxCrisis)
-                        .addComponent(jButtonAddCrise))
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jButtonAddCrise)
+                            .addComponent(jButtonCloseCrise)))
                     .addComponent(jLabelDescription)
                     .addComponent(jScrollPaneDescription)
                     .addComponent(jLabelVehicules)
@@ -183,20 +194,25 @@ public final class MainWindow extends javax.swing.JFrame {
     
     private void jButtonAddCrisePerformed(java.awt.event.ActionEvent evt) {
         AddCrisisFrame acf = new AddCrisisFrame();
-        RessourcesUpdated();
+        ProjetEJBClient.getCont().UpdateRessources();
+    }
+    
+    private void jButtonCloseCrisePerformed(java.awt.event.ActionEvent evt) {
+        ProjetEJBClient.getCont().setCriseClosed(jComboBoxCrisis.getSelectedItem().toString());
+        ProjetEJBClient.getCont().UpdateRessources();
     }
 
     private void jButtonAddVoiturePerformed(ActionEvent evt){
         AddVoitureFrame avf = new AddVoitureFrame();
-        RessourcesUpdated();
+        ProjetEJBClient.getCont().UpdateRessources();
     }
     
     private void jButtonRemoveVoiturePerformed(ActionEvent evt){
        if(jTableVehicules.getSelectedRow() >= 0 && jTableVehicules.getSelectedRow() < itVehicule){
           RoutePK rpk = new RoutePK(jTableVehicules.getValueAt(jTableVehicules.getSelectedRow(), 0).toString(),jComboBoxCrisis.getSelectedItem().toString());
           Route r = new Route(rpk);
-          ProjetEJBClient.getCont().RemoveRoute(r); 
-          RessourcesUpdated();
+          ProjetEJBClient.getCont().RemoveRoute(r);
+          ProjetEJBClient.getCont().UpdateRessources();
       }
       else{
           JOptionPane.showMessageDialog(ProjetEJBClient.getView(), "Aucune ligne selectionne", " Erreur de selection ", JOptionPane.ERROR_MESSAGE);
@@ -238,8 +254,6 @@ public final class MainWindow extends javax.swing.JFrame {
     
     public void RessourcesUpdated(){
         
-        System.out.println("gui update");
-        
         Ressources res = ProjetEJBClient.getRessource();
         
         Integer current = _currentCrisis;
@@ -248,21 +262,22 @@ public final class MainWindow extends javax.swing.JFrame {
             if(res.getCrise(i).getStatut().equals("Active"))
                 jComboBoxCrisis.addItem(res.getCrise(i).getIdcrisis());
         }
-        if(current==-1 && res.getCrises().size()>0)
+        if((current == -1 || current >= res.getCrises().size()) && res.getCrises().size()>0)
             current = 0;
         if(current>=0 && res.getCrises().size()<=0)
             current = -1;
         _currentCrisis = current;
         jComboBoxCrisis.setSelectedIndex(_currentCrisis);
         
-        if(_currentCrisis != -1) {
-            jTextAreaDescription.setText(null);
+        jTextAreaDescription.setText(null);
+        jTableVehicules.removeAll();
+        if(res.getCrises().size()>0) {
+
             jTextAreaDescription.append("Position : " + res.getCrise(_currentCrisis).getLongitude() + "; " + res.getCrise(_currentCrisis).getLatitude() + "\r\n" + "\r\n");
             jTextAreaDescription.append("Heure de début : " + res.getCrise(_currentCrisis).getT() + "\r\n" + "\r\n");
             
             Integer timeOutId = -1;
             for(int i=0; i<res.getTols().size(); i++) {
-                System.err.println();
                 if(res.getCrise(_currentCrisis).getIdcrisis().equals(res.getTol(i).getIdcrisis())) {
                     timeOutId = i;
                 }
@@ -272,11 +287,13 @@ public final class MainWindow extends javax.swing.JFrame {
                 Date cd = new Date();
                 long minutes = res.getTol(timeOutId).getD().getTime() - cd.getTime();
                 minutes /= 60000;
-                jTextAreaDescription.append("Timer : " + minutes + " minutes" + "\r\n" + "\r\n");
+                if(minutes >= 0)
+                    jTextAreaDescription.append("Timer : " + minutes + " minutes" + "\r\n" + "\r\n");
+                else
+                    jTextAreaDescription.append("Timer : " + "elapsed"  + "\r\n" + "\r\n");
             }
             jTextAreaDescription.append("Description : " + res.getCrise(_currentCrisis).getDescription());
             
-            jTableVehicules.removeAll();
             Object[][] data = new Object[res.getVehicules().size()][4];
             itVehicule = 0;
             
@@ -302,8 +319,13 @@ public final class MainWindow extends javax.swing.JFrame {
         return jComboBoxCrisis;
     }
     
+    public String getReasons() {
+        return JOptionPane.showInputDialog("Reasons why timer elapsed :");
+    }
+    
     private javax.swing.JButton jButtonQuit;
     private javax.swing.JButton jButtonAddCrise;
+    private javax.swing.JButton jButtonCloseCrise;
     private javax.swing.JButton jButtonAddVoiture;
     private javax.swing.JButton jButtonRemoveVoiture;
     private javax.swing.JComboBox jComboBoxCrisis;
