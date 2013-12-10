@@ -5,6 +5,8 @@
 package grazimba.ttsing.projetejbClient;
 
 import grazimba.ttsing.projetejb.Crisis;
+import grazimba.ttsing.projetejb.Route;
+import grazimba.ttsing.projetejb.RoutePK;
 import grazimba.ttsing.projetejb.Routeplan;
 import grazimba.ttsing.projetejb.Timeoutlog;
 import java.awt.Container;
@@ -181,15 +183,24 @@ public final class MainWindow extends javax.swing.JFrame {
     
     private void jButtonAddCrisePerformed(java.awt.event.ActionEvent evt) {
         AddCrisisFrame acf = new AddCrisisFrame();
+        RessourcesUpdated();
     }
 
     private void jButtonAddVoiturePerformed(ActionEvent evt){
         AddVoitureFrame avf = new AddVoitureFrame();
+        RessourcesUpdated();
     }
     
     private void jButtonRemoveVoiturePerformed(ActionEvent evt){
-        RemoveVoiture rv = new RemoveVoiture();
-        rv.Remove();
+       if(jTableVehicules.getSelectedRow() >= 0 && jTableVehicules.getSelectedRow() < itVehicule){
+          RoutePK rpk = new RoutePK(jTableVehicules.getValueAt(jTableVehicules.getSelectedRow(), 0).toString(),jComboBoxCrisis.getSelectedItem().toString());
+          Route r = new Route(rpk);
+          ProjetEJBClient.getCont().RemoveRoute(r); 
+          RessourcesUpdated();
+      }
+      else{
+          JOptionPane.showMessageDialog(ProjetEJBClient.getView(), "Aucune ligne selectionne", " Erreur de selection ", JOptionPane.ERROR_MESSAGE);
+      }
     }
     
     private void CrisisComboBoxItemChanged(ActionEvent evt) {
@@ -289,14 +300,6 @@ public final class MainWindow extends javax.swing.JFrame {
     
     public JComboBox getComboBoxCrisis(){
         return jComboBoxCrisis;
-    }
-    
-    public JTable getJTableVehicules(){
-        return jTableVehicules;
-    }
-    
-    public int getNbVehicule(){
-        return itVehicule;
     }
     
     private javax.swing.JButton jButtonQuit;
