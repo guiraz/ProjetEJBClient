@@ -237,6 +237,10 @@ public final class MainWindow extends javax.swing.JFrame {
             if(res.getCrise(i).getStatut().equals("Active"))
                 jComboBoxCrisis.addItem(res.getCrise(i).getIdcrisis());
         }
+        if(current==-1 && res.getCrises().size()>0)
+            current = 0;
+        if(current>=0 && res.getCrises().size()<=0)
+            current = -1;
         _currentCrisis = current;
         jComboBoxCrisis.setSelectedIndex(_currentCrisis);
         
