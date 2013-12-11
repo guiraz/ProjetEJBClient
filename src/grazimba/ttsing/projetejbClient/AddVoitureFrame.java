@@ -4,12 +4,12 @@
  */
 package grazimba.ttsing.projetejbClient;
 
-import grazimba.ttsing.projetejb.Route;
-import grazimba.ttsing.projetejb.RoutePK;
+import grazimba.ttsing.projetejb.*;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
@@ -23,14 +23,17 @@ import javax.swing.JLabel;
 public class AddVoitureFrame extends JFrame {
     
     /* Frame */
+    private String _idCrisis;
     private JPanel _contentPane;
     private GridLayout _layout;
     private JButton _okButton;
     private JButton _cancelButton;
     private JComboBox _vehiList;
+    private List<Vehicule> _vehicules;
     
-    public AddVoitureFrame(){
+    public AddVoitureFrame(String id){
         setTitle("Add Voiture");
+        _idCrisis = id;
         InitLayout();
     }
     
@@ -43,7 +46,7 @@ public class AddVoitureFrame extends JFrame {
         _okButton.setPreferredSize(new Dimension(200,25));
         _cancelButton = new JButton("Cancel");
         _vehiList = new JComboBox();
-        recupVehi();
+        recupVehicules();
         
         /* Listener */
         _okButton.addActionListener(new ActionListener() {
@@ -72,42 +75,18 @@ public class AddVoitureFrame extends JFrame {
         setVisible(true);
     }
     
-    /** Check des conditions pour afficher des vehicules valide **/
-    private void recupVehi(){
-        for(int i = 0 ;  i < ProjetEJBClient.getRessource().getVehicules().size() ; i++ )
-        {
-            boolean find = false;
-            for(int j = 0; j<ProjetEJBClient.getRessource().getRoutes().size(); j++){
-                if(ProjetEJBClient.getRessource().getRoute(j).getRoutePK().getIdvehicule().equals(ProjetEJBClient.getRessource().getVehicule(i).getIdvehicule()))
-                    find = true;
-            }
-            if(!find) {
-                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE) {
-                    String tempPosition = ProjetEJBClient.getRessource().getVehicules().get(i).getPosition();
-                    if((tempPosition.equals("Station") || tempPosition.equals("ERTS")) && ProjetEJBClient.getRessource().getVehicules().get(i).getType().equals("Police") )
-                        _vehiList.addItem(ProjetEJBClient.getRessource().getVehicules().get(i).getIdvehicule().toString());
-                }
-                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) {
-                    String tempPosition = ProjetEJBClient.getRessource().getVehicules().get(i).getPosition();
-                    if((tempPosition.equals("Station") || tempPosition.equals("ERTS")) && ProjetEJBClient.getRessource().getVehicules().get(i).getType().equals("Fire") )
-                        _vehiList.addItem(ProjetEJBClient.getRessource().getVehicules().get(i).getIdvehicule().toString());
-                } 
-            }
+    private void recupVehicules() {
+        _vehicules = ProjetEJBClient.getCont().getVehiculesForCrisis();
+        for(int i=0; i < _vehicules.size(); i++) {
+            _vehiList.addItem(_vehicules.get(i).getIdvehicule());
         }
     }
     
     private void OKButtonActionPerformed(ActionEvent evt){
-        String idcrisis =  ProjetEJBClient.getView().getComboBoxCrisis().getSelectedItem().toString();
-        for(int i = 0 ; i < ProjetEJBClient.getRessource().getCrises().size() ; i++)
-        {
-            if(ProjetEJBClient.getRessource().getCrises().get(i).getIdcrisis().toString().equals(idcrisis))
-            {
-                RoutePK rpk = new RoutePK(_vehiList.getSelectedItem().toString(),idcrisis);
-                Route r = new Route(rpk);
-                ProjetEJBClient.getCont().AddRoute(r);
-                this.dispose();
-            }
-        }
+        RoutePK rpk = new RoutePK(_vehiList.getSelectedItem().toString(), _idCrisis);
+        Route r = new Route(rpk);
+        ProjetEJBClient.getCont().AddRoute(r);
+        this.dispose();
     }
     
     private void CancelButtonActionPerformed(ActionEvent evt) {

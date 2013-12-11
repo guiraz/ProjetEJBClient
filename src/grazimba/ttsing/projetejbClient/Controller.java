@@ -21,12 +21,12 @@ public class Controller {
     }
     
     public void LaunchThreads() {
-        ProjetEJBClient.getView().launch();
+        ProjetEJBClient.getMainWindow().launch();
         ProjetEJBClient.getThreadMAJ().start();
     }
     
     public void ExitQuery() {
-        ProjetEJBClient.getView().dispose();
+        ProjetEJBClient.getMainWindow().dispose();
         ProjetEJBClient.getThreadMAJ().SetActive(false);
         System.exit(0);
     }
@@ -36,7 +36,7 @@ public class Controller {
     }
     
     public void RessourcesUpdated() {
-        ProjetEJBClient.getView().RessourcesUpdated();
+        ProjetEJBClient.getMainWindow().RessourcesUpdated();
     }
     
     public void AddCrisis(Crisis c, Timeoutlog t, Routeplan rt) {
@@ -60,7 +60,7 @@ public class Controller {
     }
     
     public String getRouteName() {
-        return ProjetEJBClient.getView().getRouteName();
+        return ProjetEJBClient.getMainWindow().getRouteName();
     }
     
     public void setCriseClosed(String s) {
@@ -68,7 +68,7 @@ public class Controller {
     }
     
     public String getReasons() {
-        return ProjetEJBClient.getView().getReasons();
+        return ProjetEJBClient.getMainWindow().getReasons();
     }
     
     public List<Crisis> getActiveCrisis() {
@@ -86,6 +86,10 @@ public class Controller {
     
     public Routeplan getRoutePlanOf(String s) {
         return ProjetEJBClient.getRessource().getRoutePlanOf(s);
+    }
+    
+    public List<Vehicule> getVehiculesForCrisis() {
+        return ProjetEJBClient.getRessource().getVehiculesForCrisis();
     }
 }
 

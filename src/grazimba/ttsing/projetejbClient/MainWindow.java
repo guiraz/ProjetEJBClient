@@ -230,7 +230,7 @@ public final class MainWindow extends javax.swing.JFrame {
     }
 
     private void jButtonAddVoiturePerformed(ActionEvent evt){
-        AddVoitureFrame avf = new AddVoitureFrame();
+        AddVoitureFrame avf = new AddVoitureFrame(jComboBoxCrisis.getSelectedItem().toString());
         ProjetEJBClient.getCont().UpdateRessources();
     }
     
@@ -337,7 +337,10 @@ public final class MainWindow extends javax.swing.JFrame {
             //Get the routeplan of the current crisis to display it in the textarea
             Routeplan currentRP = ProjetEJBClient.getCont().getRoutePlanOf(crisesActives.get(_currentCrisis).getIdcrisis());
             if(currentRP.getNomroute() != null)
-                jTextAreaDescription.append("Nom route : " + currentRP.getNomroute()  + "\r\n" + "\r\n");
+                if(currentRP.getComfirm().equals("t"))
+                    jTextAreaDescription.append("Nom route : " + currentRP.getNomroute()  + " (comfirm)" +"\r\n" + "\r\n");
+                else
+                    jTextAreaDescription.append("Nom route : " + currentRP.getNomroute()  + " (uncomfirm)"  + "\r\n" + "\r\n");
             else
                 jTextAreaDescription.append("Nom route : " + "n/c"  + "\r\n" + "\r\n");
             

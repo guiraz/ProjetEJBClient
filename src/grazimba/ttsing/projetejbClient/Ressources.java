@@ -173,6 +173,33 @@ public class Ressources {
     public Routeplan getRoutePlanOf(String id) {
         return _rp.find(id);
     }
+    
+    public List<Vehicule> getVehiculesForCrisis() {
+        List<Vehicule> vehiForCrisis = getVehicules();
+        for(int i=0; i<vehiForCrisis.size(); i++) {
+            if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) {
+                if(vehiForCrisis.get(i).getType().equals("Police") || inUse(vehiForCrisis.get(i).getIdvehicule())) {
+                    vehiForCrisis.remove(i);
+                    i--;
+                }
+            }
+            if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE) {
+                if(vehiForCrisis.get(i).getType().equals("Fire") || inUse(vehiForCrisis.get(i).getIdvehicule())) {
+                    vehiForCrisis.remove(i);
+                    i--;
+                }
+            }
+        }
+        return vehiForCrisis;
+    }
+    
+    private boolean inUse(String id) {
+        for(int i=0; i<routes.size(); i++) {
+            if(routes.get(i).getRoutePK().getIdvehicule().equals(id))
+                return true;
+        }
+        return false;
+    }
 
     
     /**
