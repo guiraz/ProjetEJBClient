@@ -9,6 +9,7 @@ import grazimba.ttsing.projetejb.Routeplan;
 import grazimba.ttsing.projetejb.Route;
 import grazimba.ttsing.projetejb.Timeoutlog;
 import grazimba.ttsing.projetejb.Vehicule;
+import java.util.List;
 
 /**
  *
@@ -42,10 +43,6 @@ public class Controller {
         ProjetEJBClient.getRessource().AddCrise(c, t, rt);
     }
     
-    public void AddVoiture(Vehicule v){
-        ProjetEJBClient.getRessource().AddVehicule(v);
-    }
-    
     public void AddRoute(Route r){
         ProjetEJBClient.getRessource().AddRoute(r);
     }
@@ -54,15 +51,41 @@ public class Controller {
         ProjetEJBClient.getRessource().RemoveRoute(r);
     }
     
-    public void EditRouteplan(Routeplan rp){
-        ProjetEJBClient.getRessource().EditRouteplan(rp);
+    public void EditRouteplan(String s){
+        ProjetEJBClient.getRessource().EditRouteplan(s);
     }
+    
+    public void ComfirmRouteplan(String s){
+        ProjetEJBClient.getRessource().ComfirmRouteplan(s);
+    }
+    
+    public String getRouteName() {
+        return ProjetEJBClient.getView().getRouteName();
+    }
+    
     public void setCriseClosed(String s) {
         ProjetEJBClient.getRessource().setCriseClosed(s);
     }
     
     public String getReasons() {
         return ProjetEJBClient.getView().getReasons();
-    }   
+    }
+    
+    public List<Crisis> getActiveCrisis() {
+        return ProjetEJBClient.getRessource().getActiveCrisis();
+    }
+    
+    public Timeoutlog getTolOf(String id) {
+        return ProjetEJBClient.getRessource().getTolOf(id);
+    }
+    
+    public List<Vehicule> getVehiculesOf(String id) {
+        return ProjetEJBClient.getRessource().getVehiculesOf(id);
+        
+    }
+    
+    public Routeplan getRoutePlanOf(String s) {
+        return ProjetEJBClient.getRessource().getRoutePlanOf(s);
+    }
 }
 

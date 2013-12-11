@@ -5,6 +5,7 @@
 package grazimba.ttsing.projetejbClient;
 
 import grazimba.ttsing.projetejb.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 /**
@@ -40,8 +41,8 @@ public class Ressources {
             _rt = (RouteFacadeRemote) _jndi_context.lookup("ejb/RouteFacade");
             
             System.out.println("context ok");
-            ProjetEJBClient.getCont().LaunchThreads();
             
+            ProjetEJBClient.getCont().LaunchThreads();
         }
         catch (Throwable t)
         {
@@ -69,24 +70,40 @@ public class Ressources {
         _rp.create(rt);
         UpdateRessources();
     }
-
-    public void AddVehicule(Vehicule v){
-        _vf.create(v);
-        UpdateRessources();
-    }
     
     public void AddRoute(Route r){
         _rt.create(r);
+        Routeplan tmpRP = _rp.find(r.getRoutePK().getIdcrisis());
+        if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE)
+            tmpRP.setNbfirevehicule(tmpRP.getNbfirevehicule()+1);
+        else
+            tmpRP.setNbpolicevehicule(tmpRP.getNbpolicevehicule()+1);
+        _rp.edit(tmpRP);
         UpdateRessources();
     }
     
     public void RemoveRoute(Route r){
         _rt.remove(r);
+        Routeplan tmpRP = _rp.find(r.getRoutePK().getIdcrisis());
+        if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE)
+            tmpRP.setNbfirevehicule(tmpRP.getNbfirevehicule()-1);
+        else
+            tmpRP.setNbpolicevehicule(tmpRP.getNbpolicevehicule()-1);
+        _rp.edit(tmpRP);
         UpdateRessources();
     }
     
-    public void EditRouteplan(Routeplan rp){
-        _rp.edit(rp);
+    public void EditRouteplan(String s){
+        Routeplan tmpRP = _rp.find(s);
+        tmpRP.setNomroute(ProjetEJBClient.getCont().getRouteName());
+        _rp.edit(tmpRP);
+        UpdateRessources();
+    }
+    
+    public void ComfirmRouteplan(String s){
+        Routeplan tmpRP = _rp.find(s);
+        tmpRP.setComfirm("t");
+        _rp.edit(tmpRP);
         UpdateRessources();
     }
     
@@ -109,7 +126,54 @@ public class Ressources {
         }
         tmpC.setStatut("Closed");
         _crise.edit(tmpC);
+        
+        for(int i=0; i<routes.size(); i++) {
+            if(routes.get(i).getRoutePK().getIdcrisis().equals(tmpC.getIdcrisis()))
+                _rt.remove(routes.get(i));
+        }
+        
+        Routeplan tmpRP = _rp.find(tmpC.getIdcrisis());
+        tmpRP.setNbfirevehicule(0);
+        tmpRP.setNbpolicevehicule(0);
     }
+    
+    public List<Crisis> getActiveCrisis() {
+        List<Crisis> crisesActives = new ArrayList<Crisis>();
+        for(int i=0; i<crises.size(); i++) {
+            if(crises.get(i).getStatut().equals("Active"))
+                crisesActives.add(crises.get(i));
+        }
+        return crisesActives;
+    }
+    
+    public Timeoutlog getTolOf(String id){
+        for(int i=0; i<tol.size(); i++) {
+            if(tol.get(i).getIdcrisis().equals(id))
+                return tol.get(i);
+        }
+        return null;
+    }
+    
+    public List<Vehicule> getVehiculesOf(String id) {
+        List<Vehicule> listVehi = new ArrayList<Vehicule>();
+        for(int i=0; i<routes.size(); i++) {
+            if(routes.get(i).getRoutePK().getIdcrisis().equals(id)) {
+                for(int j=0; j<vehicule.size(); j++) {
+                    if(vehicule.get(j).getIdvehicule().equals(routes.get(i).getRoutePK().getIdvehicule()))
+                        listVehi.add(vehicule.get(j));
+                }
+            }
+        }
+        if(listVehi.size()>0)
+            return listVehi;
+        else
+            return null;
+    }
+    
+    public Routeplan getRoutePlanOf(String id) {
+        return _rp.find(id);
+    }
+
     
     /**
      * Crisis

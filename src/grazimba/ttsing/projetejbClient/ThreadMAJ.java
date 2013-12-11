@@ -24,7 +24,6 @@ public class ThreadMAJ extends Thread{
     @Override
     public void run() {
         while(_isActive) {
-            
             ProjetEJBClient.getCont().UpdateRessources();
 
             try {

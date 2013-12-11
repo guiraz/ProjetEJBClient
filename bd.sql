@@ -29,8 +29,10 @@ create table Routeplan(
     nbpolicevehicule int not null,
     nbfirevehicule int not null,
     nomroute varchar(15),
+    comfirm varchar(1) not null,
     constraint routeplanidcrisis_pk primary key(idcrisis),
-    constraint routeplan_fk_1 foreign key(idcrisis) references Crisis(idcrisis) on delete cascade
+    constraint routeplan_fk_1 foreign key(idcrisis) references Crisis(idcrisis) on delete cascade,
+    constraint comfirm_check check(comfirm = 't' or comfirm = 'f')
 );
 
 create table Vehicule(

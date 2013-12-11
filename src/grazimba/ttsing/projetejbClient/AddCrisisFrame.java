@@ -59,6 +59,7 @@ class AddCrisisFrame extends JFrame {
         _rp.setNbfirevehicule(0);
         _rp.setNbpolicevehicule(0);
         _rp.setNomroute(null);
+        _rp.setComfirm("f");
         setTitle("add Crisis");
         initLayout();
 

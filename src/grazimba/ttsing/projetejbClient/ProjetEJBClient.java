@@ -18,10 +18,11 @@ public class ProjetEJBClient {
      */
     public static void main(String[] args) {
         _typeProgram = PROGRAM_CLIENT.POLICE;
-        _mw = new MainWindow();
         _tMAJ = new ThreadMAJ();
         _cont = new Controller();
+        _mw = new MainWindow();
         _ressource = new Ressources();
+        
     }
     
     public static MainWindow getView() {
