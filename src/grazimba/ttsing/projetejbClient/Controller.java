@@ -30,6 +30,10 @@ public class Controller {
         System.exit(0);
     }
     
+    public void UpdateRessources() {
+        ProjetEJBClient.getRessource().UpdateRessources();
+    }
+    
     public void RessourcesUpdated() {
         ProjetEJBClient.getView().RessourcesUpdated();
     }
@@ -53,4 +57,12 @@ public class Controller {
     public void EditRouteplan(Routeplan rp){
         ProjetEJBClient.getRessource().EditRouteplan(rp);
     }
+    public void setCriseClosed(String s) {
+        ProjetEJBClient.getRessource().setCriseClosed(s);
+    }
+    
+    public String getReasons() {
+        return ProjetEJBClient.getView().getReasons();
+    }   
 }
+
