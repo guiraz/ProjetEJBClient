@@ -283,7 +283,7 @@ public final class MainWindow extends javax.swing.JFrame {
     }
     
     
-    public void RessourcesUpdated(){
+    synchronized public void RessourcesUpdated(){
         
         Ressources res = ProjetEJBClient.getRessource();
         
@@ -293,16 +293,16 @@ public final class MainWindow extends javax.swing.JFrame {
             if(res.getCrise(i).getStatut().equals("Active"))
                 jComboBoxCrisis.addItem(res.getCrise(i).getIdcrisis());
         }
-        if((current == -1 || current >= res.getCrises().size()) && res.getCrises().size()>0)
+        if(current == -1 || current >= jComboBoxCrisis.getItemCount())
             current = 0;
-        if(current>=0 && res.getCrises().size()<=0)
+        if(jComboBoxCrisis.getItemCount() <= 0)
             current = -1;
         _currentCrisis = current;
         jComboBoxCrisis.setSelectedIndex(_currentCrisis);
         
         jTextAreaDescription.setText(null);
-        jTableVehicules.removeAll();
-        if(res.getCrises().size()>0) {
+        jTableVehicules.setModel(new MyTableModel(new Object [0][0]));
+        if(jComboBoxCrisis.getItemCount()>0) {
 
             jTextAreaDescription.append("Position : " + res.getCrise(_currentCrisis).getLongitude() + "; " + res.getCrise(_currentCrisis).getLatitude() + "\r\n" + "\r\n");
             jTextAreaDescription.append("Heure de début : " + res.getCrise(_currentCrisis).getT() + "\r\n" + "\r\n");
@@ -325,11 +325,18 @@ public final class MainWindow extends javax.swing.JFrame {
             }
             jTextAreaDescription.append("Description : " + res.getCrise(_currentCrisis).getDescription());
             
-            Object[][] data = new Object[res.getVehicules().size()][4];
-            itVehicule = 0;
             
+            int nbVehicules = 0;
             for(int i = 0; i<res.getRoutes().size(); i++) {
-                if(res.getRoute(i).getRoutePK().getIdcrisis().equals(res.getCrise(_currentCrisis).getIdcrisis())) {
+                if(res.getRoute(i).getRoutePK().getIdcrisis().equals(jComboBoxCrisis.getSelectedItem())) {
+                    nbVehicules++;
+                }
+            }
+            
+            Object[][] data = new Object[nbVehicules][4];
+            itVehicule = 0;
+            for(int i = 0; i<res.getRoutes().size(); i++) {
+                if(res.getRoute(i).getRoutePK().getIdcrisis().equals(jComboBoxCrisis.getSelectedItem())) {
                     for(int j = 0; j<res.getVehicules().size(); j++){
                         if(res.getVehicule(j).getIdvehicule().equals(res.getRoute(i).getRoutePK().getIdvehicule())){
                             data[itVehicule][0] = res.getVehicule(j).getIdvehicule();

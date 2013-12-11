@@ -96,7 +96,7 @@ public class Ressources {
         
         try {
             Timeoutlog tmpTL = _tl.find(s);
-            if(d.getTime() > tmpC.getT().getTime())
+            if(d.getTime() > tmpTL.getD().getTime())
             {
                 if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE)
                     tmpTL.setPscreason(ProjetEJBClient.getCont().getReasons());
