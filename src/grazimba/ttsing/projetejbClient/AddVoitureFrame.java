@@ -22,15 +22,6 @@ import javax.swing.JLabel;
  */
 public class AddVoitureFrame extends JFrame {
     
-    /* Frame */
-    private String _idCrisis;
-    private JPanel _contentPane;
-    private GridLayout _layout;
-    private JButton _okButton;
-    private JButton _cancelButton;
-    private JComboBox _vehiList;
-    private List<Vehicule> _vehicules;
-    
     public AddVoitureFrame(String id){
         setTitle("Add Voiture");
         _idCrisis = id;
@@ -92,4 +83,15 @@ public class AddVoitureFrame extends JFrame {
     private void CancelButtonActionPerformed(ActionEvent evt) {
         this.dispose();
     }
+    
+    /**
+     * AddVoiture Attributes
+     */
+    private String _idCrisis;
+    private JPanel _contentPane;
+    private GridLayout _layout;
+    private JButton _okButton;
+    private JButton _cancelButton;
+    private JComboBox _vehiList;
+    private List<Vehicule> _vehicules;
 }

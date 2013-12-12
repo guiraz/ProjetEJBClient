@@ -69,6 +69,10 @@ public class Ressources {
         UpdateRessources();
     }
     
+    public void AddVehicule(Vehicule v){
+        _vf.create(v);
+    }
+    
     public void AddRoute(Route r){
         _rt.create(r);
         Routeplan tmpRP = _rp.find(r.getRoutePK().getIdcrisis());

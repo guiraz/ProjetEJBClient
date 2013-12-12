@@ -53,7 +53,7 @@ public class ProjetEJBClient {
                     
                 case 3 :
                     _typeProgram = PROGRAM_CLIENT.CREATE_VEHICULES;
-                    //_cvmw = new CreateVehiculeMainWindow();
+                    _cvmw = new CreateVehiculeMainWindow();
                     break;
                     
                 default :
@@ -77,10 +77,10 @@ public class ProjetEJBClient {
     public static VehiculeMainWindow getVehiculeMainWindow() {
         return _vmw;
     }
-//    
-//    public static CreateVehiculeMainWindow getCreateVehiculeMainWindow() {
-//        return _cvmw;
-//    }
+    
+    public static CreateVehiculeMainWindow getCreateVehiculeMainWindow() {
+        return _cvmw;
+    }
     
     public static Ressources getRessource() {
         return _ressource;
@@ -105,7 +105,7 @@ public class ProjetEJBClient {
      */
     private static MainWindow _mw;
     private static VehiculeMainWindow _vmw;
-    //private static CreateVehiculeMainWindow _cvmw;
+    private static CreateVehiculeMainWindow _cvmw;
     private static Ressources _ressource;
     private static ThreadMAJ _tMAJ;
     private static Controller _cont;

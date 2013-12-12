@@ -189,7 +189,7 @@ public final class MainWindow extends javax.swing.JFrame {
                     .addComponent(jButtonRemoveVoiture)
                     .addComponent(jButtonQuit))
         );
-        layout.linkSize(SwingConstants.HORIZONTAL, jButtonAddCrise, jButtonAddVoiture, jButtonRemoveVoiture, jButtonQuit,jButtonAddRoute,jButtonConfRoute,jButtonDeclineRoute);
+        layout.linkSize(SwingConstants.HORIZONTAL, jButtonAddCrise, jButtonAddVoiture, jButtonRemoveVoiture, jButtonQuit,jButtonAddRoute,jButtonConfRoute,jButtonDeclineRoute, jButtonCloseCrise);
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
                     .addComponent(jLabelTitle)
