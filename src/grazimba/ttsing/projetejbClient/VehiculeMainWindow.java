@@ -69,7 +69,18 @@ public class VehiculeMainWindow extends JFrame{
     }
     
     public void RessourcesUpdated() {
-        //todo
+        if(_currentVehicule!=null && !_currentVehicule.equals("")) {
+            _labelId.setText(_currentVehicule);
+        }
+        else {
+            _buttonAL.setEnabled(false);
+            _buttonERTL.setEnabled(false);
+            _buttonERTS.setEnabled(false);
+            _buttonStation.setEnabled(false);
+            Object[] possibleValues = ProjetEJBClient.getCont().getFreeVehiculesIds().toArray();
+            _currentVehicule = (String) JOptionPane.showInputDialog(this, "Choose a vehicule : ", "Vehicule selection", JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
+            RessourcesUpdated();
+        }
     }
     
     private void initComponents() {

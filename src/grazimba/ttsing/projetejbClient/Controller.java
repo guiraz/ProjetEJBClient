@@ -143,5 +143,9 @@ public class Controller {
     public List<Vehicule> getVehiculesForCrisis() {
         return ProjetEJBClient.getRessource().getVehiculesForCrisis();
     }
+    
+    public List<String> getFreeVehiculesIds() {
+        return ProjetEJBClient.getRessource().getFreeVehiculesIds();
+    }
 }
 

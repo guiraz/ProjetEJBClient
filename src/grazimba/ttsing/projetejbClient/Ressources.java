@@ -144,7 +144,7 @@ public class Ressources {
     }
     
     public List<Crisis> getActiveCrisis() {
-        List<Crisis> crisesActives = new ArrayList<Crisis>();
+        List<Crisis> crisesActives = new ArrayList<>();
         for(int i=0; i<crises.size(); i++) {
             if(crises.get(i).getStatut().equals("Active"))
                 crisesActives.add(crises.get(i));
@@ -161,7 +161,7 @@ public class Ressources {
     }
     
     public List<Vehicule> getVehiculesOf(String id) {
-        List<Vehicule> listVehi = new ArrayList<Vehicule>();
+        List<Vehicule> listVehi = new ArrayList<>();
         for(int i=0; i<routes.size(); i++) {
             if(routes.get(i).getRoutePK().getIdcrisis().equals(id)) {
                 for(int j=0; j<vehicule.size(); j++) {
@@ -206,6 +206,15 @@ public class Ressources {
         }
         return false;
     }
+    
+    public List<String> getFreeVehiculesIds() {
+        List<String> tmpVehiIds = new ArrayList<>();
+        for(int i=0; i<vehicule.size(); i++) {
+            if(!inUse(vehicule.get(i).getIdvehicule()))
+                tmpVehiIds.add(vehicule.get(i).getIdvehicule());
+        }
+        return tmpVehiIds;
+    }
 
     
     /**
@@ -227,6 +236,7 @@ public class Ressources {
     }
     
     /**
+     * @param i
      * @return the crise at i
      */
     public Crisis getCrise(int i) {
@@ -262,6 +272,7 @@ public class Ressources {
     }
     
     /**
+     * @param i
      * @return the route at i
      */
     public Route getRoute(int i) {
@@ -298,6 +309,7 @@ public class Ressources {
     }
     
     /**
+     * @param i
      * @return the toutePlan at i
      */
     public Routeplan getToutePlan(int i) {
@@ -334,6 +346,7 @@ public class Ressources {
     }
     
     /**
+     * @param i
      * @return the tol at i
      */
     public Timeoutlog getTol(int i) {
@@ -370,6 +383,7 @@ public class Ressources {
     }
     
     /**
+     * @param i
      * @return the vehicule at i
      */
     public Vehicule getVehicule(int i) {
