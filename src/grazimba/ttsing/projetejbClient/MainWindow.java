@@ -116,8 +116,6 @@ public final class MainWindow extends javax.swing.JFrame {
         jLabelDescription.setText("Description :");
 
         jTextAreaDescription.setEditable(false);
-        jTextAreaDescription.setColumns(20);
-        jTextAreaDescription.setRows(5);
         jScrollPaneDescription.setViewportView(jTextAreaDescription);
         jScrollPaneDescription.setMinimumSize(new Dimension(200, 200));
 

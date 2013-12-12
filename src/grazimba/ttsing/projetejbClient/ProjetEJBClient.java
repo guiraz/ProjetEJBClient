@@ -6,7 +6,7 @@ package grazimba.ttsing.projetejbClient;
 
 import javax.swing.JFrame;
 
-enum PROGRAM_CLIENT {FIRE, POLICE, VEHICULE, CREATE_VEHICULES};
+enum PROGRAM_CLIENT {POLICE, FIRE, VEHICULE, CREATE_VEHICULES};
 
 
 /**
@@ -48,7 +48,7 @@ public class ProjetEJBClient {
                     
                 case 2 :
                     _typeProgram = PROGRAM_CLIENT.VEHICULE;
-                    //_vmw = new VehiculeMainWindow();
+                    _vmw = new VehiculeMainWindow();
                     break;
                     
                 case 3 :
@@ -74,10 +74,9 @@ public class ProjetEJBClient {
         return _mw;
     }
     
-//TODO
-//    public static VehiculeMainWindow getVehiculeMainWindow() {
-//        return _vmw;
-//    }
+    public static VehiculeMainWindow getVehiculeMainWindow() {
+        return _vmw;
+    }
 //    
 //    public static CreateVehiculeMainWindow getCreateVehiculeMainWindow() {
 //        return _cvmw;
@@ -105,8 +104,7 @@ public class ProjetEJBClient {
      * Main attributes
      */
     private static MainWindow _mw;
-    //TO CREATE
-    //private static VehiculeMainWindow _vmw;
+    private static VehiculeMainWindow _vmw;
     //private static CreateVehiculeMainWindow _cvmw;
     private static Ressources _ressource;
     private static ThreadMAJ _tMAJ;

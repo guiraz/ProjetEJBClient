@@ -21,12 +21,44 @@ public class Controller {
     }
     
     public void LaunchThreads() {
-        ProjetEJBClient.getMainWindow().launch();
+        switch (ProjetEJBClient.getTypeProgram()) {
+            case POLICE :
+                ProjetEJBClient.getMainWindow().launch();
+                break;
+                
+            case FIRE :
+                ProjetEJBClient.getMainWindow().launch();
+                break;
+                
+            case VEHICULE :
+                ProjetEJBClient.getVehiculeMainWindow().launch();
+                break;
+                
+            case CREATE_VEHICULES :
+                //ProjetEJBClient.getCreateVehiculeMainWindow().launch();
+                break;
+        }
         ProjetEJBClient.getThreadMAJ().start();
     }
     
     public void ExitQuery() {
-        ProjetEJBClient.getMainWindow().dispose();
+        switch (ProjetEJBClient.getTypeProgram()) {
+            case POLICE :
+                ProjetEJBClient.getMainWindow().dispose();
+                break;
+                
+            case FIRE :
+                ProjetEJBClient.getMainWindow().dispose();
+                break;
+                
+            case VEHICULE :
+                ProjetEJBClient.getVehiculeMainWindow().dispose();
+                break;
+                
+            case CREATE_VEHICULES :
+                //ProjetEJBClient.getCreateVehiculeMainWindow().dispose();
+                break;
+        }
         ProjetEJBClient.getThreadMAJ().SetActive(false);
         System.exit(0);
     }
@@ -36,7 +68,23 @@ public class Controller {
     }
     
     public void RessourcesUpdated() {
-        ProjetEJBClient.getMainWindow().RessourcesUpdated();
+        switch (ProjetEJBClient.getTypeProgram()) {
+            case POLICE :
+                ProjetEJBClient.getMainWindow().RessourcesUpdated();
+                break;
+                
+            case FIRE :
+                ProjetEJBClient.getMainWindow().RessourcesUpdated();
+                break;
+                
+            case VEHICULE :
+                ProjetEJBClient.getVehiculeMainWindow().RessourcesUpdated();
+                break;
+                
+            case CREATE_VEHICULES :
+                //ProjetEJBClient.getCreateVehiculeMainWindow().RessourcesUpdated();
+                break;
+        }
     }
     
     public void AddCrisis(Crisis c, Timeoutlog t, Routeplan rt) {
