@@ -61,6 +61,7 @@ public final class MainWindow extends javax.swing.JFrame {
         jButtonRemoveVoiture = new javax.swing.JButton();
         jButtonAddRoute = new javax.swing.JButton();
         jButtonConfRoute = new javax.swing.JButton();
+        jButtonDeclineRoute = new javax.swing.JButton();
         
         _currentCrisis = new Integer(-1);
         _updating = false;
@@ -158,6 +159,16 @@ public final class MainWindow extends javax.swing.JFrame {
             
         });
         
+        jButtonDeclineRoute.setText("Decline Route");
+        jButtonDeclineRoute.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                jButtonDeclineRoutePerformed(e);
+            }
+            
+        });
+        
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         
@@ -172,14 +183,15 @@ public final class MainWindow extends javax.swing.JFrame {
                     .addComponent(jScrollPaneVehicules))
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                     .addComponent(jButtonAddCrise)
+                    .addComponent(jButtonCloseCrise)
                     .addComponent(jButtonAddRoute)
                     .addComponent(jButtonConfRoute)
-                    .addComponent(jButtonCloseCrise)
+                    .addComponent(jButtonDeclineRoute)
                     .addComponent(jButtonAddVoiture)
                     .addComponent(jButtonRemoveVoiture)
                     .addComponent(jButtonQuit))
         );
-        layout.linkSize(SwingConstants.HORIZONTAL, jButtonAddCrise, jButtonAddVoiture, jButtonRemoveVoiture, jButtonQuit,jButtonAddRoute,jButtonConfRoute);
+        layout.linkSize(SwingConstants.HORIZONTAL, jButtonAddCrise, jButtonAddVoiture, jButtonRemoveVoiture, jButtonQuit,jButtonAddRoute,jButtonConfRoute,jButtonDeclineRoute);
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
                     .addComponent(jLabelTitle)
@@ -193,7 +205,8 @@ public final class MainWindow extends javax.swing.JFrame {
                         .addComponent(jScrollPaneDescription)
                         .addGroup(layout.createSequentialGroup()
                             .addComponent(jButtonAddRoute)
-                            .addComponent(jButtonConfRoute)))
+                            .addComponent(jButtonConfRoute)
+                            .addComponent(jButtonDeclineRoute)))
                     .addComponent(jLabelVehicules)
                     .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(jScrollPaneVehicules)
@@ -256,6 +269,10 @@ public final class MainWindow extends javax.swing.JFrame {
         ProjetEJBClient.getCont().ComfirmRouteplan(jComboBoxCrisis.getSelectedItem().toString());
     }
     
+    private void jButtonDeclineRoutePerformed(ActionEvent evt){
+        ProjetEJBClient.getCont().DeclineRouteplan(jComboBoxCrisis.getSelectedItem().toString());
+    }
+    
     private void CrisisComboBoxItemChanged(ActionEvent evt) {
         _currentCrisis = jComboBoxCrisis.getSelectedIndex();
         RessourcesUpdated();
@@ -289,7 +306,7 @@ public final class MainWindow extends javax.swing.JFrame {
     }
     
     
-    synchronized public void RessourcesUpdated(){
+    public void RessourcesUpdated(){
         _updating = true;
         
         //Get list of active crisis
@@ -311,12 +328,14 @@ public final class MainWindow extends javax.swing.JFrame {
             _currentCrisis = -1;
         jComboBoxCrisis.setSelectedIndex(_currentCrisis);
         
+        
         //Set the Table and the TextArea empty
         jTextAreaDescription.setText(null);
         jTableVehicules.setModel(new MyTableModel(new Object [0][0]));
         //If there is an active crisis
         if(crisesActives.size()>0) {
-
+            
+            
             //Write position and beginning date in textarea
             jTextAreaDescription.append("Position : " + crisesActives.get(_currentCrisis).getLongitude() + "; " + crisesActives.get(_currentCrisis).getLatitude() + "\r\n" + "\r\n");
             jTextAreaDescription.append("Heure de début : " + crisesActives.get(_currentCrisis).getT() + "\r\n" + "\r\n");
@@ -372,19 +391,23 @@ public final class MainWindow extends javax.swing.JFrame {
             
             if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) {
                 jButtonAddRoute.setEnabled(false);
-                if(currentRP.getNomroute() != null && currentRP.getComfirm().equals("f"))
+                if(currentRP.getNomroute() != null && currentRP.getComfirm().equals("f")) {
                     jButtonConfRoute.setEnabled(true);
-                else
+                    jButtonDeclineRoute.setEnabled(true);
+                }
+                else {
                     jButtonConfRoute.setEnabled(false);
+                    jButtonDeclineRoute.setEnabled(false);
+                }
             }
             else {
                 jButtonConfRoute.setEnabled(false);
+                jButtonDeclineRoute.setEnabled(false);
                 if(currentRP.getNomroute() != null)
                     jButtonAddRoute.setEnabled(false);
                 else
                     jButtonAddRoute.setEnabled(true);
             }
-            
         }
         else {
             //Disable all button exept button Quit & AddCrise
@@ -393,6 +416,7 @@ public final class MainWindow extends javax.swing.JFrame {
             jButtonRemoveVoiture.setEnabled(false);
             jButtonAddRoute.setEnabled(false);
             jButtonConfRoute.setEnabled(false);
+            jButtonDeclineRoute.setEnabled(false);
         }
         
         _updating = false;
@@ -417,6 +441,7 @@ public final class MainWindow extends javax.swing.JFrame {
     private javax.swing.JButton jButtonRemoveVoiture;
     private javax.swing.JButton jButtonAddRoute;
     private javax.swing.JButton jButtonConfRoute;
+    private javax.swing.JButton jButtonDeclineRoute;
     private javax.swing.JComboBox jComboBoxCrisis;
     private javax.swing.JLabel jLabelTitle;
     private javax.swing.JLabel jLabelVehicules;
@@ -428,7 +453,7 @@ public final class MainWindow extends javax.swing.JFrame {
 
     
     private Integer _currentCrisis;
-    private boolean _updating;
+    private static boolean _updating;
 }
 
 class MyTableModel extends AbstractTableModel {

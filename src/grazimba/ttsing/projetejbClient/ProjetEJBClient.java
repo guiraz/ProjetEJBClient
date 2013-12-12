@@ -22,38 +22,38 @@ public class ProjetEJBClient {
         try {
             if(args.length != 1)
                 throw new Exception("Arguments count invalid");
-            switch (args[0]) {
+            
+            Integer arg;
+            try {
+                arg = Integer.parseInt(args[0]);
+            }
+            catch (Exception e){
+                throw new Exception("Invalid arguments : waiting for {0, 1, 2, 3}" + e);
+            }
+            
+            _tMAJ = new ThreadMAJ();
+            _cont = new Controller();
+            
+            switch (arg) {
                 
-                case "0" :
+                case 0 :
                     _typeProgram = PROGRAM_CLIENT.POLICE;
-                    _tMAJ = new ThreadMAJ();
-                    _cont = new Controller();
                     _mw = new MainWindow();
-                    _ressource = new Ressources();
                     break;
                     
-                case "1" :
+                case 1 :
                     _typeProgram = PROGRAM_CLIENT.FIRE;
-                    _tMAJ = new ThreadMAJ();
-                    _cont = new Controller();
                     _mw = new MainWindow();
-                    _ressource = new Ressources();
                     break;
                     
-                case "2" :
+                case 2 :
                     _typeProgram = PROGRAM_CLIENT.VEHICULE;
-                    _tMAJ = new ThreadMAJ();
-                    _cont = new Controller();
                     //_vmw = new VehiculeMainWindow();
-                    _ressource = new Ressources();
                     break;
                     
-                case "3" :
+                case 3 :
                     _typeProgram = PROGRAM_CLIENT.CREATE_VEHICULES;
-                    _tMAJ = new ThreadMAJ();
-                    _cont = new Controller();
                     //_cvmw = new CreateVehiculeMainWindow();
-                    _ressource = new Ressources();
                     break;
                     
                 default :
@@ -64,6 +64,9 @@ public class ProjetEJBClient {
             System.err.println(e);
             System.exit(1);
         }
+        
+        _ressource = new Ressources();
+        _cont.LaunchThreads();
         
     }
     

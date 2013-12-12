@@ -59,6 +59,10 @@ public class Controller {
         ProjetEJBClient.getRessource().ComfirmRouteplan(s);
     }
     
+    public void DeclineRouteplan(String s){
+        ProjetEJBClient.getRessource().DeclineRouteplan(s);
+    }
+    
     public String getRouteName() {
         return ProjetEJBClient.getMainWindow().getRouteName();
     }

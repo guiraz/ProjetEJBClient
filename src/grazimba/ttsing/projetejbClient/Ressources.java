@@ -41,8 +41,6 @@ public class Ressources {
             _rt = (RouteFacadeRemote) _jndi_context.lookup("ejb/RouteFacade");
             
             System.out.println("context ok");
-            
-            ProjetEJBClient.getCont().LaunchThreads();
         }
         catch (Throwable t)
         {
@@ -54,7 +52,7 @@ public class Ressources {
     /**
      * @desc Call by ThreadMAJ, update ressources from db
      */
-    synchronized public void UpdateRessources() {
+    public void UpdateRessources() {
         setCrises(_crise.findAll());
         setVehicules(_vf.findAll());
         setTols(_tl.findAll());
@@ -107,23 +105,30 @@ public class Ressources {
         UpdateRessources();
     }
     
+    public void DeclineRouteplan(String s){
+        Routeplan tmpRP = _rp.find(s);
+        tmpRP.setComfirm("f");
+        tmpRP.setNomroute(null);
+        _rp.edit(tmpRP);
+        UpdateRessources();
+    }
+    
     public void setCriseClosed(String s) {
         Date d = new Date();
         Crisis tmpC = _crise.find(s);
         
-        try {
-            Timeoutlog tmpTL = _tl.find(s);
+        Timeoutlog tmpTL = _tl.find(s);
+        if(tmpTL != null) {
             if(d.getTime() > tmpTL.getD().getTime())
             {
                 if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE)
                     tmpTL.setPscreason(ProjetEJBClient.getCont().getReasons());
-                else
+                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE)
                     tmpTL.setFscreason(ProjetEJBClient.getCont().getReasons());
                 _tl.edit(tmpTL);
             }
         }
-        catch( Exception e) {
-        }
+        
         tmpC.setStatut("Closed");
         _crise.edit(tmpC);
         
@@ -135,6 +140,7 @@ public class Ressources {
         Routeplan tmpRP = _rp.find(tmpC.getIdcrisis());
         tmpRP.setNbfirevehicule(0);
         tmpRP.setNbpolicevehicule(0);
+        _rp.edit(tmpRP);
     }
     
     public List<Crisis> getActiveCrisis() {
