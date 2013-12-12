@@ -5,8 +5,10 @@
 package grazimba.ttsing.projetejbClient;
 
 import grazimba.ttsing.projetejb.*;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 /**
  *
@@ -97,7 +99,8 @@ public class Ressources {
     
     public void EditRouteplan(String s){
         Routeplan tmpRP = _rp.find(s);
-        tmpRP.setNomroute(ProjetEJBClient.getCont().getRouteName());
+        while(tmpRP.getNomroute()==null || tmpRP.getNomroute().equals(""))
+            tmpRP.setNomroute(ProjetEJBClient.getCont().getRouteName());
         _rp.edit(tmpRP);
         UpdateRessources();
     }
@@ -125,10 +128,14 @@ public class Ressources {
         if(tmpTL != null) {
             if(d.getTime() > tmpTL.getD().getTime())
             {
-                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE)
-                    tmpTL.setPscreason(ProjetEJBClient.getCont().getReasons());
-                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE)
-                    tmpTL.setFscreason(ProjetEJBClient.getCont().getReasons());
+                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE){
+                    while(tmpTL.getPscreason()==null || tmpTL.getPscreason().equals(""))
+                        tmpTL.setPscreason(ProjetEJBClient.getCont().getReasons());
+                }
+                if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE){
+                    while(tmpTL.getFscreason()==null || tmpTL.getFscreason().equals(""))
+                        tmpTL.setFscreason(ProjetEJBClient.getCont().getReasons());
+                }
                 _tl.edit(tmpTL);
             }
         }
@@ -156,7 +163,7 @@ public class Ressources {
         return crisesActives;
     }
     
-    public Timeoutlog getTolOf(String id){
+    public Timeoutlog getTolOfCrisis(String id){
         for(int i=0; i<tol.size(); i++) {
             if(tol.get(i).getIdcrisis().equals(id))
                 return tol.get(i);
@@ -164,7 +171,7 @@ public class Ressources {
         return null;
     }
     
-    public List<Vehicule> getVehiculesOf(String id) {
+    public List<Vehicule> getVehiculesOfCrisis(String id) {
         List<Vehicule> listVehi = new ArrayList<>();
         for(int i=0; i<routes.size(); i++) {
             if(routes.get(i).getRoutePK().getIdcrisis().equals(id)) {
@@ -180,7 +187,7 @@ public class Ressources {
             return null;
     }
     
-    public Routeplan getRoutePlanOf(String id) {
+    public Routeplan getRoutePlanOfCrisis(String id) {
         return _rp.find(id);
     }
     
@@ -188,13 +195,13 @@ public class Ressources {
         List<Vehicule> vehiForCrisis = getVehicules();
         for(int i=0; i<vehiForCrisis.size(); i++) {
             if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) {
-                if(vehiForCrisis.get(i).getType().equals("Police") || inUse(vehiForCrisis.get(i).getIdvehicule())) {
+                if(vehiForCrisis.get(i).getType().equals("Police") || !VehiculeDispo(vehiForCrisis.get(i).getIdvehicule())) {
                     vehiForCrisis.remove(i);
                     i--;
                 }
             }
             if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE) {
-                if(vehiForCrisis.get(i).getType().equals("Fire") || inUse(vehiForCrisis.get(i).getIdvehicule())) {
+                if(vehiForCrisis.get(i).getType().equals("Fire") || !VehiculeDispo(vehiForCrisis.get(i).getIdvehicule())) {
                     vehiForCrisis.remove(i);
                     i--;
                 }
@@ -203,21 +210,100 @@ public class Ressources {
         return vehiForCrisis;
     }
     
-    private boolean inUse(String id) {
+    private boolean VehiculeDispo(String id) {
+        if(!VehiculeInUse(id))
+            return false;
         for(int i=0; i<routes.size(); i++) {
             if(routes.get(i).getRoutePK().getIdvehicule().equals(id))
-                return true;
+                return false;
         }
-        return false;
+        return true;
     }
     
     public List<String> getFreeVehiculesIds() {
         List<String> tmpVehiIds = new ArrayList<>();
         for(int i=0; i<vehicule.size(); i++) {
-            if(!inUse(vehicule.get(i).getIdvehicule()))
+            if(!VehiculeInUse(vehicule.get(i).getIdvehicule()))
                 tmpVehiIds.add(vehicule.get(i).getIdvehicule());
         }
         return tmpVehiIds;
+    }
+    
+    private boolean VehiculeInUse(String id) {
+        for(int i=0; i<vehicule.size(); i++) {
+            if(vehicule.get(i).getUsed().equals("t"))
+                return true;
+        }
+        return false;
+    }
+    
+    public void setVehiculeInUse(String idV, boolean inuse) {
+        Vehicule tmpV = _vf.find(idV);
+        if(inuse)
+            tmpV.setUsed("t");
+        else
+            tmpV.setUsed("f");
+        tmpV.setEta(null);
+        tmpV.setPosition("Station");
+        removeRoutesOfVehicule(idV);
+        _vf.edit(tmpV);
+    }
+    
+    private void removeRoutesOfVehicule(String idV) {
+        List<Route> tmpRts = new ArrayList<>();
+        for(int i=0; i<routes.size(); i++) {
+            if(routes.get(i).getRoutePK().getIdvehicule().equals(idV))
+                tmpRts.add(routes.get(i));
+        }
+        for(int i=0; i<tmpRts.size(); i++) {
+            _rt.remove(tmpRts.get(i));
+        }
+    }
+    
+    public void setVehiculePosition(String idV, int pos) {
+        Vehicule tmpV = _vf.find(idV);
+        switch (pos) {
+            case 0:
+                tmpV.setPosition("Station");
+                break;
+                
+            case 1:
+                tmpV.setPosition("ERTL");
+                break;
+                
+            case 2:
+                tmpV.setPosition("AL");
+                break;
+                
+            case 3:
+                tmpV.setPosition("ERTS");
+                break;
+        }
+        _vf.edit(tmpV);
+    }
+    
+    public Route getRouteOfVehi(String idV) {
+        Route tmpR = null;
+        int i =0;
+        while(i<routes.size() && tmpR==null) {
+            if(routes.get(i).getRoutePK().getIdvehicule().equals(idV))
+                tmpR = routes.get(i);
+            else
+                i++;
+        }
+        return tmpR;
+    }
+    
+    public String getVehiculePosition(String idV) {
+        String tmpPos = null;
+        int i=0;
+        while(i<vehicule.size() && tmpPos==null) {
+            if(vehicule.get(i).getIdvehicule().equals(idV))
+                tmpPos=vehicule.get(i).getPosition();
+            else
+                i++;
+        }
+        return tmpPos;
     }
 
     

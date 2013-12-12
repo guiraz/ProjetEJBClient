@@ -127,17 +127,17 @@ public class Controller {
         return ProjetEJBClient.getRessource().getActiveCrisis();
     }
     
-    public Timeoutlog getTolOf(String id) {
-        return ProjetEJBClient.getRessource().getTolOf(id);
+    public Timeoutlog getTolOfCrisis(String id) {
+        return ProjetEJBClient.getRessource().getTolOfCrisis(id);
     }
     
-    public List<Vehicule> getVehiculesOf(String id) {
-        return ProjetEJBClient.getRessource().getVehiculesOf(id);
+    public List<Vehicule> getVehiculesOfCrisis(String id) {
+        return ProjetEJBClient.getRessource().getVehiculesOfCrisis(id);
         
     }
     
-    public Routeplan getRoutePlanOf(String s) {
-        return ProjetEJBClient.getRessource().getRoutePlanOf(s);
+    public Routeplan getRoutePlanOfCrisis(String s) {
+        return ProjetEJBClient.getRessource().getRoutePlanOfCrisis(s);
     }
     
     public List<Vehicule> getVehiculesForCrisis() {
@@ -146,6 +146,22 @@ public class Controller {
     
     public List<String> getFreeVehiculesIds() {
         return ProjetEJBClient.getRessource().getFreeVehiculesIds();
+    }
+    
+    public void SetVehiculeInUse(String idV, boolean inuse) {
+        ProjetEJBClient.getRessource().setVehiculeInUse(idV, inuse);
+    }
+    
+    public void setVehiculePosition(String idV, int pos) {
+        ProjetEJBClient.getRessource().setVehiculePosition(idV, pos);
+    }
+    
+    public Route getRouteOfVehi(String idV) {
+        return ProjetEJBClient.getRessource().getRouteOfVehi(idV);
+    }
+    
+    public String getVehiculePosition(String idV) {
+        return ProjetEJBClient.getRessource().getVehiculePosition(idV);
     }
 }
 

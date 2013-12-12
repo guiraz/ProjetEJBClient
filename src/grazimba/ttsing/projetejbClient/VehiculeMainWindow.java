@@ -6,6 +6,7 @@
 
 package grazimba.ttsing.projetejbClient;
 
+import grazimba.ttsing.projetejb.Route;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +37,7 @@ public class VehiculeMainWindow extends JFrame{
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                ProjetEJBClient.getCont().SetVehiculeInUse(_currentVehicule, false);
                 ProjetEJBClient.getCont().ExitQuery();
             }
         });
@@ -71,6 +73,30 @@ public class VehiculeMainWindow extends JFrame{
     public void RessourcesUpdated() {
         if(_currentVehicule!=null && !_currentVehicule.equals("")) {
             _labelId.setText(_currentVehicule);
+            
+            Route routeOfVehi = ProjetEJBClient.getCont().getRouteOfVehi(_currentVehicule);
+            String position = ProjetEJBClient.getCont().getVehiculePosition(_currentVehicule);
+            _textAreaDesc.setText(null);
+            if(routeOfVehi==null) {
+                _textAreaDesc.append("Vehicule position : " + position + "\r\n" + "\r\n");
+                _textAreaDesc.append("Crise : " + "n/c" + "\r\n" + "\r\n");
+                _textAreaDesc.append("Position : " + "n/c" + "\r\n" + "\r\n");
+                _textAreaDesc.append("Beginning time : " + "n/c" + "\r\n" + "\r\n");
+                _textAreaDesc.append("Route : " + "n/c" + "\r\n" + "\r\n");
+                _textAreaDesc.append("Timer : " + "n/c" + "\r\n" + "\r\n");
+                _textAreaDesc.append("ETA : " + "n/c");
+                
+                if(position.equals("Station"))
+                    _buttonStation.setEnabled(false);
+                else
+                    _buttonStation.setEnabled(true);
+                _buttonERTL.setEnabled(false);
+                _buttonERTS.setEnabled(false);
+                _buttonAL.setEnabled(false);
+            }
+            else {
+                //todo
+            }
         }
         else {
             _buttonAL.setEnabled(false);
@@ -78,8 +104,17 @@ public class VehiculeMainWindow extends JFrame{
             _buttonERTS.setEnabled(false);
             _buttonStation.setEnabled(false);
             Object[] possibleValues = ProjetEJBClient.getCont().getFreeVehiculesIds().toArray();
-            _currentVehicule = (String) JOptionPane.showInputDialog(this, "Choose a vehicule : ", "Vehicule selection", JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
-            RessourcesUpdated();
+            if(possibleValues.length <= 0) {
+                JOptionPane.showMessageDialog(this, "No vehicules avalaible", "No vehicules", JOptionPane.ERROR_MESSAGE);
+                ProjetEJBClient.getCont().SetVehiculeInUse(_currentVehicule, false);
+                ProjetEJBClient.getCont().ExitQuery();
+            }
+            else {
+                while(_currentVehicule==null || _currentVehicule.equals(""))
+                    _currentVehicule = (String) JOptionPane.showInputDialog(this, "Choose a vehicule : ", "Vehicule selection", JOptionPane.QUESTION_MESSAGE, null, possibleValues, possibleValues[0]);
+                ProjetEJBClient.getCont().SetVehiculeInUse(_currentVehicule, true);
+                RessourcesUpdated();
+            }
         }
     }
     
@@ -191,24 +226,29 @@ public class VehiculeMainWindow extends JFrame{
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
         if(JOptionPane.showOptionDialog(null, "Voulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
+            ProjetEJBClient.getCont().SetVehiculeInUse(_currentVehicule, false);
             ProjetEJBClient.getCont().ExitQuery();
         }
     }
     
     private void jButtonStationActionPerformed(ActionEvent evt) {
-        //todo
+        ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 0);
+        ProjetEJBClient.getCont().UpdateRessources();
     }
     
     private void jButtonERTSActionPerformed(ActionEvent evt) {
-        //todo
+        ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 3);
+        ProjetEJBClient.getCont().UpdateRessources();
     }
     
     private void jButtonALActionPerformed(ActionEvent evt) {
-        //todo
+        ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 2);
+        ProjetEJBClient.getCont().UpdateRessources();
     }
     
     private void jButtonERTLActionPerformed(ActionEvent evt) {
-        //todo
+        ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 1);
+        ProjetEJBClient.getCont().UpdateRessources();
     }
     
     /**

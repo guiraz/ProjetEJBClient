@@ -170,6 +170,9 @@ public final class MainWindow extends javax.swing.JFrame {
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+        
         layout.setHorizontalGroup(
                 layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -339,7 +342,7 @@ public final class MainWindow extends javax.swing.JFrame {
             jTextAreaDescription.append("Heure de début : " + crisesActives.get(_currentCrisis).getT() + "\r\n" + "\r\n");
             
             //Get the timeoutlog of the current selected crisis
-            Timeoutlog currentTol = ProjetEJBClient.getCont().getTolOf(crisesActives.get(_currentCrisis).getIdcrisis());
+            Timeoutlog currentTol = ProjetEJBClient.getCont().getTolOfCrisis(crisesActives.get(_currentCrisis).getIdcrisis());
             //If there is one we get the timer and calculate the remaining time to display it on the text area
             if(currentTol != null) {
                 Date cd = new Date();
@@ -352,7 +355,7 @@ public final class MainWindow extends javax.swing.JFrame {
             }
             
             //Get the routeplan of the current crisis to display it in the textarea
-            Routeplan currentRP = ProjetEJBClient.getCont().getRoutePlanOf(crisesActives.get(_currentCrisis).getIdcrisis());
+            Routeplan currentRP = ProjetEJBClient.getCont().getRoutePlanOfCrisis(crisesActives.get(_currentCrisis).getIdcrisis());
             if(currentRP.getNomroute() != null)
                 if(currentRP.getComfirm().equals("t"))
                     jTextAreaDescription.append("Nom route : " + currentRP.getNomroute()  + " (comfirm)" +"\r\n" + "\r\n");
@@ -365,7 +368,7 @@ public final class MainWindow extends javax.swing.JFrame {
             jTextAreaDescription.append("Description : " + crisesActives.get(_currentCrisis).getDescription());
             
             //Get list of vehicules of the current crisis
-            List<Vehicule> vehiculesOfCrisis = ProjetEJBClient.getCont().getVehiculesOf(crisesActives.get(_currentCrisis).getIdcrisis());
+            List<Vehicule> vehiculesOfCrisis = ProjetEJBClient.getCont().getVehiculesOfCrisis(crisesActives.get(_currentCrisis).getIdcrisis());
             //And fill the table with it
             if(vehiculesOfCrisis != null) {
                 Object[][] data = new Object[vehiculesOfCrisis.size()][4];
