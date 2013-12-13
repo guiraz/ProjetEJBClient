@@ -306,6 +306,14 @@ public class Ressources {
         return tmpPos;
     }
 
+    public boolean VehiculeIdDispo(String idV){
+        boolean find=false;
+        for(int i = 0 ; i < ProjetEJBClient.getRessource().getVehicules().size(); i++){
+                if(ProjetEJBClient.getRessource().getVehicule(i).getIdvehicule().equals(idV))
+                    find=true;
+        }
+        return find;
+    }
     
     /**
      * Crisis

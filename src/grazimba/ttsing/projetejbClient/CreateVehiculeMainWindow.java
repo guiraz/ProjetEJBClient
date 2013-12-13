@@ -116,17 +116,13 @@ public class CreateVehiculeMainWindow extends JFrame{
     private void jButtonAddActionPerformed(ActionEvent evt) {
         boolean find=false;
         if(_textID.getText().length() <= 10 && _textID.getText().length() > 0){
-            for(int i = 0 ; i < ProjetEJBClient.getRessource().getVehicules().size(); i++){
-                if(ProjetEJBClient.getRessource().getVehicule(i).getIdvehicule().equals(_textID.getText()))
-                    find=true;
-            }
-            if(!find){
+            if(!ProjetEJBClient.getCont().VehiculeIdDispo(_textID.getText())){
                 v = new Vehicule(_textID.getText(),"Station",_comboBoxVehi.getSelectedItem().toString(),"f");
                 v.setEta(null);
-                ProjetEJBClient.getRessource().AddVehicule(v);
+                ProjetEJBClient.getCont().addVehicule(v);
                 
                 Object[] options = { "OUI", "NON" };
-                if(JOptionPane.showOptionDialog(null, "Vehicule ajoute. \nVoulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
+                if(JOptionPane.showOptionDialog(null, "Vehicule ajoute. \nVoulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]) == JOptionPane.OK_OPTION) {
                     ProjetEJBClient.getCont().ExitQuery();
                 }
             }
@@ -135,6 +131,10 @@ public class CreateVehiculeMainWindow extends JFrame{
         }
         else
             JOptionPane.showMessageDialog(this, "Identifiant doit contenir 10 caracteres", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+    }
+    
+    public void RessourcesUpdated() {
+        
     }
     
     /**

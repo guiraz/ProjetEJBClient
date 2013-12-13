@@ -82,7 +82,7 @@ public class Controller {
                 break;
                 
             case CREATE_VEHICULES :
-                //ProjetEJBClient.getCreateVehiculeMainWindow().RessourcesUpdated();
+                ProjetEJBClient.getCreateVehiculeMainWindow().RessourcesUpdated();
                 break;
         }
     }
@@ -130,6 +130,9 @@ public class Controller {
     public Timeoutlog getTolOfCrisis(String id) {
         return ProjetEJBClient.getRessource().getTolOfCrisis(id);
     }
+    public void addVehicule(Vehicule v){
+        ProjetEJBClient.getRessource().AddVehicule(v);
+    }
     
     public List<Vehicule> getVehiculesOfCrisis(String id) {
         return ProjetEJBClient.getRessource().getVehiculesOfCrisis(id);
@@ -162,6 +165,10 @@ public class Controller {
     
     public String getVehiculePosition(String idV) {
         return ProjetEJBClient.getRessource().getVehiculePosition(idV);
+    }
+    
+    public boolean VehiculeIdDispo(String idV){
+        return ProjetEJBClient.getRessource().VehiculeIdDispo(idV);
     }
 }
 
