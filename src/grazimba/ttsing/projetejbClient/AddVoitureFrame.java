@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 public class AddVoitureFrame extends JFrame {
     
     public AddVoitureFrame(String id){
-        setTitle("Add Voiture");
+        setTitle("Add Vehicule");
         _idCrisis = id;
         InitLayout();
     }

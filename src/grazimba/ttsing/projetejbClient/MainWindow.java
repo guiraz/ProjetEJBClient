@@ -81,7 +81,7 @@ public final class MainWindow extends javax.swing.JFrame {
         jLabelTitle.setHorizontalAlignment(SwingConstants.LEFT);
         jLabelTitle.setText("");
 
-        jButtonQuit.setText("Quitter");
+        jButtonQuit.setText("Quit");
         jButtonQuit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -89,7 +89,7 @@ public final class MainWindow extends javax.swing.JFrame {
             }
         });
         
-        jButtonAddCrise.setText("Add Crise");
+        jButtonAddCrise.setText("Add Crisis");
         jButtonAddCrise.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -97,7 +97,7 @@ public final class MainWindow extends javax.swing.JFrame {
             }
         });
         
-        jButtonCloseCrise.setText("Archiver Crise");
+        jButtonCloseCrise.setText("Close Crisis");
         jButtonCloseCrise.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -111,7 +111,7 @@ public final class MainWindow extends javax.swing.JFrame {
         jScrollPaneVehicules.setSize(jScrollPaneVehicules.getSize().width, 200);
         jScrollPaneVehicules.setMinimumSize(new Dimension(200, 200));
 
-        jLabelVehicules.setText("Voitures :");
+        jLabelVehicules.setText("Vehicules :");
 
         jLabelDescription.setText("Description :");
 
@@ -119,7 +119,7 @@ public final class MainWindow extends javax.swing.JFrame {
         jScrollPaneDescription.setViewportView(jTextAreaDescription);
         jScrollPaneDescription.setMinimumSize(new Dimension(200, 200));
 
-        jButtonAddVoiture.setText("Add Voiture");
+        jButtonAddVoiture.setText("Add Vehicule");
         jButtonAddVoiture.addActionListener(new ActionListener() {
 
             @Override
@@ -128,7 +128,7 @@ public final class MainWindow extends javax.swing.JFrame {
             }
         });
 
-        jButtonRemoveVoiture.setText("Remove Voiture");
+        jButtonRemoveVoiture.setText("Remove Vehicule");
         jButtonRemoveVoiture.addActionListener(new ActionListener(){
 
             @Override
@@ -228,7 +228,7 @@ public final class MainWindow extends javax.swing.JFrame {
 
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
-        if(JOptionPane.showOptionDialog(null, "Voulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
+        if(JOptionPane.showOptionDialog(null, "Do you want to quit?", "Quit", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
             ProjetEJBClient.getCont().ExitQuery();
         }
     }
@@ -255,7 +255,7 @@ public final class MainWindow extends javax.swing.JFrame {
           ProjetEJBClient.getCont().UpdateRessources();
       }
       else{
-          JOptionPane.showMessageDialog(this, "Aucune ligne selectionne", " Erreur de selection ", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog(this, "No row selected", " Selection Error ", JOptionPane.ERROR_MESSAGE);
       }
     }
     
@@ -305,11 +305,9 @@ public final class MainWindow extends javax.swing.JFrame {
     
     public void RessourcesUpdated(){
         _updating = true;
-        System.out.println("update");
         
         //Get list of active crisis
         List<Crisis> crisesActives = ProjetEJBClient.getCont().getActiveCrisis();
-        System.out.println("nbcrise : " + crisesActives.size());
         
         //Update ComboBox of crisis
         Integer current = _currentCrisis;
@@ -328,7 +326,6 @@ public final class MainWindow extends javax.swing.JFrame {
         jComboBoxCrisis.setSelectedIndex(_currentCrisis);
         
         
-        System.out.println("before text area");
         //Set the Table and the TextArea empty
         jTextAreaDescription.setText(null);
         jTableVehicules.setModel(new MyTableModel(new Object [0][0]));
@@ -338,7 +335,7 @@ public final class MainWindow extends javax.swing.JFrame {
             
             //Write position and beginning date in textarea
             jTextAreaDescription.append("Position : " + crisesActives.get(_currentCrisis).getLongitude() + "; " + crisesActives.get(_currentCrisis).getLatitude() + "\r\n" + "\r\n");
-            jTextAreaDescription.append("Heure de début : " + crisesActives.get(_currentCrisis).getT() + "\r\n" + "\r\n");
+            jTextAreaDescription.append("Beginnig time : " + crisesActives.get(_currentCrisis).getT() + "\r\n" + "\r\n");
             
             //Get the timeoutlog of the current selected crisis
             Timeoutlog currentTol = ProjetEJBClient.getCont().getTolOfCrisis(crisesActives.get(_currentCrisis).getIdcrisis());
@@ -352,21 +349,18 @@ public final class MainWindow extends javax.swing.JFrame {
                 else
                     jTextAreaDescription.append("Timer : " + "elapsed"  + "\r\n" + "\r\n");
             }
-            System.out.println("after tol");
             //Get the routeplan of the current crisis to display it in the textarea
             Routeplan currentRP = ProjetEJBClient.getCont().getRoutePlanOfCrisis(crisesActives.get(_currentCrisis).getIdcrisis());
-            System.out.println("after getrpof crisis");
             if(currentRP.getNomroute() != null)
                 if(currentRP.getComfirm().equals("t"))
-                    jTextAreaDescription.append("Nom route : " + currentRP.getNomroute()  + " (comfirm)" +"\r\n" + "\r\n");
+                    jTextAreaDescription.append("Name route : " + currentRP.getNomroute()  + " (comfirm)" +"\r\n" + "\r\n");
                 else
-                    jTextAreaDescription.append("Nom route : " + currentRP.getNomroute()  + " (uncomfirm)"  + "\r\n" + "\r\n");
+                    jTextAreaDescription.append("Name route : " + currentRP.getNomroute()  + " (uncomfirm)"  + "\r\n" + "\r\n");
             else
-                jTextAreaDescription.append("Nom route : " + "n/c"  + "\r\n" + "\r\n");
+                jTextAreaDescription.append("Name route : " + "n/c"  + "\r\n" + "\r\n");
             
             //Display the description of the crisis in the textarea
             jTextAreaDescription.append("Description : " + crisesActives.get(_currentCrisis).getDescription());
-            System.out.println("after text area");
             //Get list of vehicules of the current crisis
             List<Vehicule> vehiculesOfCrisis = ProjetEJBClient.getCont().getVehiculesOfCrisis(crisesActives.get(_currentCrisis).getIdcrisis());
             //And fill the table with it
@@ -391,7 +385,6 @@ public final class MainWindow extends javax.swing.JFrame {
                 }
                 jTableVehicules.setModel(new MyTableModel(data));
             }
-            System.out.println("after table");
             //Enabling buttons
             jButtonCloseCrise.setEnabled(true);
             jButtonAddVoiture.setEnabled(true);
@@ -432,7 +425,6 @@ public final class MainWindow extends javax.swing.JFrame {
         }
         
         _updating = false;
-        System.out.println("end update");
     }
     
     public JComboBox getComboBoxCrisis(){
@@ -475,7 +467,7 @@ public final class MainWindow extends javax.swing.JFrame {
 
 class MyTableModel extends AbstractTableModel {
     
-    String[] columnNames = {"ID Vehicule", "Date d'arrivée estimée", "Position", "Type"};
+    String[] columnNames = {"ID Vehicule", "Estimated Time to Arrival", "Position", "Type"};
     
     Object[][] data;
     

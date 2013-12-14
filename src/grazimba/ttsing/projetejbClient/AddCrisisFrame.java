@@ -60,7 +60,7 @@ class AddCrisisFrame extends JFrame {
         _rp.setNbpolicevehicule(0);
         _rp.setNomroute(null);
         _rp.setComfirm("f");
-        setTitle("add Crisis");
+        setTitle("Add Crisis");
         initLayout();
 
         this.pack();
@@ -73,7 +73,7 @@ class AddCrisisFrame extends JFrame {
         
         _okButton = new JButton("OK");
         _cancelButton = new JButton("Cancel");
-        _timerRadioButton = new JRadioButton("Timer (en minutes) : ");
+        _timerRadioButton = new JRadioButton("Timer (in minutes) : ");
         _timerRadioButton.setSelected(true);
         
         _longitudeTextField = new JTextField();
@@ -114,7 +114,7 @@ class AddCrisisFrame extends JFrame {
         _contentPane.add(new JLabel("Latitude :"));
         _contentPane.add(_latitudeTextField);
         
-        _contentPane.add(new JLabel("Heures :"));
+        _contentPane.add(new JLabel("Beginning time :"));
         _contentPane.add(new JLabel(_crise.getT().toString()));
         
         _contentPane.add(new JLabel("Description :"));
@@ -157,16 +157,16 @@ class AddCrisisFrame extends JFrame {
                         }
                         else
                         {
-                             JOptionPane.showMessageDialog(this, "Longitude [-180,180] et Latitude [-90,90] ", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+                             JOptionPane.showMessageDialog(this, "Longitude [-180,180] and Latitude [-90,90] ", " Input Error ", JOptionPane.ERROR_MESSAGE);
                         }  
                     }
                     catch (NumberFormatException e){
-                        JOptionPane.showMessageDialog(this, "Les champs longitude, latitude et timer doivent etre des nombres", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Longitude, latitude and timer fields must be numbers", " Input Error ", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else
                 {
-                    JOptionPane.showMessageDialog(this, "Les champs longitude, latitude et timer sont obligatoires", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Longitude, latitude and timer fields are required", " Input Error ", JOptionPane.ERROR_MESSAGE);
                 }
             }
             else
@@ -182,7 +182,7 @@ class AddCrisisFrame extends JFrame {
         }
         else
         {
-            JOptionPane.showMessageDialog(this, "Les champs longitude et latitude sont obligatoires", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Longitude and latitude fields are required", " Input Error ", JOptionPane.ERROR_MESSAGE);
         }
     }
     

@@ -41,8 +41,6 @@ public class Ressources {
             _tl = (TimeoutlogFacadeRemote) _jndi_context.lookup("ejb/TimeoutlogFacade");
             _rp = (RouteplanFacadeRemote) _jndi_context.lookup("ejb/RouteplanFacade");
             _rt = (RouteFacadeRemote) _jndi_context.lookup("ejb/RouteFacade");
-            
-            System.out.println("context ok");
         }
         catch (Throwable t)
         {
@@ -64,13 +62,11 @@ public class Ressources {
     }
     
     public void AddCrise(Crisis c, Timeoutlog t, Routeplan rt) {
-        System.out.println("addcrise begin");
         _crise.create(c);
         if(t != null)
             _tl.create(t);
         _rp.create(rt);
         UpdateRessources();
-        System.out.println("addcrise end");
     }
     
     public void AddVehicule(Vehicule v){

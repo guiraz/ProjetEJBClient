@@ -84,7 +84,7 @@ public class VehiculeMainWindow extends JFrame{
             _textAreaDesc.setText(null);
             if(routeOfVehi==null) {
                 _textAreaDesc.append("Vehicule position : " + currentVehi.getPosition() + "\r\n" + "\r\n");
-                _textAreaDesc.append("Crise : " + "n/c" + "\r\n" + "\r\n");
+                _textAreaDesc.append("Crisis : " + "n/c" + "\r\n" + "\r\n");
                 _textAreaDesc.append("Position : " + "n/c" + "\r\n" + "\r\n");
                 _textAreaDesc.append("Beginning time : " + "n/c" + "\r\n" + "\r\n");
                 _textAreaDesc.append("Route : " + "n/c" + "\r\n" + "\r\n");
@@ -314,7 +314,7 @@ public class VehiculeMainWindow extends JFrame{
     
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
-        if(JOptionPane.showOptionDialog(null, "Voulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
+        if(JOptionPane.showOptionDialog(null, "Do you want to quit?", "Quit", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
             ProjetEJBClient.getCont().SetVehiculeInUse(_currentVehicule, false);
             ProjetEJBClient.getCont().ExitQuery();
         }

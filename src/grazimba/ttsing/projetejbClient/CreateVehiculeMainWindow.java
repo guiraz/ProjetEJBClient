@@ -48,7 +48,7 @@ public class CreateVehiculeMainWindow extends JFrame{
         
         _textID = new JTextField();
         _comboBoxVehi = new JComboBox(_itemComboBox);
-        _buttonAdd = new JButton("Ajouter");
+        _buttonAdd = new JButton("Add");
         _buttonQuit = new JButton("Quit");
         
         GridBagConstraints gbc = new GridBagConstraints();
@@ -107,7 +107,7 @@ public class CreateVehiculeMainWindow extends JFrame{
     
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
-        if(JOptionPane.showOptionDialog(null, "Voulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
+        if(JOptionPane.showOptionDialog(null, "Do youwant to quit?", "Quit", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
             ProjetEJBClient.getCont().ExitQuery();
         }
     }
@@ -120,16 +120,16 @@ public class CreateVehiculeMainWindow extends JFrame{
                 v.setEta(null);
                 ProjetEJBClient.getCont().addVehicule(v);
                 
-                Object[] options = { "OUI", "NON" };
-                if(JOptionPane.showOptionDialog(null, "Vehicule ajoute. \nVoulez vous quitter?", "Quitter", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]) == JOptionPane.OK_OPTION) {
+                Object[] options = { "YES", "NO" };
+                if(JOptionPane.showOptionDialog(null, "Vehicule added. \nDo you want to quit?", "Quit", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[1]) == JOptionPane.OK_OPTION) {
                     ProjetEJBClient.getCont().ExitQuery();
                 }
             }
             else
-                JOptionPane.showMessageDialog(this, "Identifiant deja existant", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Already existing id", " Input Error ", JOptionPane.ERROR_MESSAGE);
         }
         else
-            JOptionPane.showMessageDialog(this, "Identifiant doit contenir 10 caracteres", " Erreur de saisie ", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "IDs must contain 10 characters", " Input Error ", JOptionPane.ERROR_MESSAGE);
     }
     
     public void RessourcesUpdated() {
