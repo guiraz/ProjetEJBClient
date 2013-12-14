@@ -35,7 +35,7 @@ public class Controller {
                 break;
                 
             case CREATE_VEHICULES :
-                //ProjetEJBClient.getCreateVehiculeMainWindow().launch();
+                ProjetEJBClient.getCreateVehiculeMainWindow().launch();
                 break;
         }
         ProjetEJBClient.getThreadMAJ().start();
@@ -56,7 +56,7 @@ public class Controller {
                 break;
                 
             case CREATE_VEHICULES :
-                //ProjetEJBClient.getCreateVehiculeMainWindow().dispose();
+                ProjetEJBClient.getCreateVehiculeMainWindow().dispose();
                 break;
         }
         ProjetEJBClient.getThreadMAJ().SetActive(false);
@@ -130,6 +130,7 @@ public class Controller {
     public Timeoutlog getTolOfCrisis(String id) {
         return ProjetEJBClient.getRessource().getTolOfCrisis(id);
     }
+    
     public void addVehicule(Vehicule v){
         ProjetEJBClient.getRessource().AddVehicule(v);
     }
@@ -163,12 +164,28 @@ public class Controller {
         return ProjetEJBClient.getRessource().getRouteOfVehi(idV);
     }
     
-    public String getVehiculePosition(String idV) {
-        return ProjetEJBClient.getRessource().getVehiculePosition(idV);
+    public Vehicule getVehiculesById(String idV) {
+        return ProjetEJBClient.getRessource().getVehiculesById(idV);
     }
     
     public boolean VehiculeIdDispo(String idV){
         return ProjetEJBClient.getRessource().VehiculeIdDispo(idV);
+    }
+    
+    public Crisis getCrisisByID(String idC) {
+        return ProjetEJBClient.getRessource().getCrisisByID(idC);
+    }
+    
+    public void setVehiculeETA(String idV) {
+        ProjetEJBClient.getRessource().setVehiculeETA(idV);
+    }
+    
+    public String getETA() {
+        return ProjetEJBClient.getVehiculeMainWindow().getETA();
+    }
+    
+    public void ErrorMessage(String m) {
+        ProjetEJBClient.getVehiculeMainWindow().ErrorMessage(m);
     }
 }
 

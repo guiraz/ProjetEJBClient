@@ -6,12 +6,17 @@
 
 package grazimba.ttsing.projetejbClient;
 
+import grazimba.ttsing.projetejb.Crisis;
 import grazimba.ttsing.projetejb.Route;
+import grazimba.ttsing.projetejb.Routeplan;
+import grazimba.ttsing.projetejb.Timeoutlog;
+import grazimba.ttsing.projetejb.Vehicule;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Date;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -75,10 +80,10 @@ public class VehiculeMainWindow extends JFrame{
             _labelId.setText(_currentVehicule);
             
             Route routeOfVehi = ProjetEJBClient.getCont().getRouteOfVehi(_currentVehicule);
-            String position = ProjetEJBClient.getCont().getVehiculePosition(_currentVehicule);
+            Vehicule currentVehi = ProjetEJBClient.getCont().getVehiculesById(_currentVehicule);
             _textAreaDesc.setText(null);
             if(routeOfVehi==null) {
-                _textAreaDesc.append("Vehicule position : " + position + "\r\n" + "\r\n");
+                _textAreaDesc.append("Vehicule position : " + currentVehi.getPosition() + "\r\n" + "\r\n");
                 _textAreaDesc.append("Crise : " + "n/c" + "\r\n" + "\r\n");
                 _textAreaDesc.append("Position : " + "n/c" + "\r\n" + "\r\n");
                 _textAreaDesc.append("Beginning time : " + "n/c" + "\r\n" + "\r\n");
@@ -86,16 +91,86 @@ public class VehiculeMainWindow extends JFrame{
                 _textAreaDesc.append("Timer : " + "n/c" + "\r\n" + "\r\n");
                 _textAreaDesc.append("ETA : " + "n/c");
                 
-                if(position.equals("Station"))
+                if(currentVehi.getPosition().equals("Station")){
+                    _buttonERTL.setEnabled(false);
                     _buttonStation.setEnabled(false);
-                else
+                    _buttonERTS.setEnabled(false);
+                    _buttonAL.setEnabled(false);
+                }
+                if(currentVehi.getPosition().equals("ERTS")){
+                    _buttonERTL.setEnabled(false);
                     _buttonStation.setEnabled(true);
-                _buttonERTL.setEnabled(false);
-                _buttonERTS.setEnabled(false);
-                _buttonAL.setEnabled(false);
+                    _buttonERTS.setEnabled(false);
+                    _buttonAL.setEnabled(false);
+                }
+                if(currentVehi.getPosition().equals("AL")){
+                    _buttonERTL.setEnabled(false);
+                    _buttonStation.setEnabled(false);
+                    _buttonERTS.setEnabled(true);
+                    _buttonAL.setEnabled(false);
+                }
+                if(currentVehi.getPosition().equals("ERTL")){
+                    _buttonERTL.setEnabled(false);
+                    _buttonStation.setEnabled(false);
+                    _buttonERTS.setEnabled(true);
+                    _buttonAL.setEnabled(false);
+                }
             }
             else {
-                //todo
+                Crisis crisisOfVehi = ProjetEJBClient.getCont().getCrisisByID(routeOfVehi.getRoutePK().getIdcrisis());
+                Timeoutlog tolOfCrisis = ProjetEJBClient.getCont().getTolOfCrisis(crisisOfVehi.getIdcrisis());
+                Routeplan rpOfCrisis = ProjetEJBClient.getCont().getRoutePlanOfCrisis(crisisOfVehi.getIdcrisis());
+                
+                _textAreaDesc.append("Vehicule position : " + currentVehi.getPosition() + "\r\n" + "\r\n");
+                _textAreaDesc.append("Crise : " + crisisOfVehi.getIdcrisis() + "\r\n" + "\r\n");
+                _textAreaDesc.append("Position : " + crisisOfVehi.getLongitude() + ";" + crisisOfVehi.getLatitude() + "\r\n" + "\r\n");
+                _textAreaDesc.append("Beginning time : " + crisisOfVehi.getT() + "\r\n" + "\r\n");
+                if(rpOfCrisis.getNomroute()==null || rpOfCrisis.getNomroute().equals(""))
+                    _textAreaDesc.append("Route : " + "n/c" + "\r\n" + "\r\n");
+                else {
+                    if(rpOfCrisis.getComfirm().equals("t"))
+                        _textAreaDesc.append("Route : " + rpOfCrisis.getNomroute() + " (comfirm)" + "\r\n" + "\r\n");
+                    else
+                        _textAreaDesc.append("Route : " + rpOfCrisis.getNomroute() + " (uncomfirm)" + "\r\n" + "\r\n");
+                }
+                if(tolOfCrisis != null) {
+                    Date d = new Date();
+                    long timer = tolOfCrisis.getD().getTime() - d.getTime();
+                    timer /= 60000;
+                    if(timer>0)
+                        _textAreaDesc.append("Timer : " + timer + " minutes" + "\r\n" + "\r\n");
+                    else
+                        _textAreaDesc.append("Timer : " + "elapsed" + "\r\n" + "\r\n");
+                }
+                
+                if(currentVehi.getEta()==null)
+                    ProjetEJBClient.getCont().setVehiculeETA(_currentVehicule);
+                _textAreaDesc.append("ETA : " + "n/c");
+                
+                if(currentVehi.getPosition().equals("Station")){
+                    _buttonERTL.setEnabled(true);
+                    _buttonStation.setEnabled(false);
+                    _buttonERTS.setEnabled(false);
+                    _buttonAL.setEnabled(false);
+                }
+                if(currentVehi.getPosition().equals("ERTS")){
+                    _buttonERTL.setEnabled(true);
+                    _buttonStation.setEnabled(false);
+                    _buttonERTS.setEnabled(false);
+                    _buttonAL.setEnabled(false);
+                }
+                if(currentVehi.getPosition().equals("AL")){
+                    _buttonERTL.setEnabled(false);
+                    _buttonStation.setEnabled(false);
+                    _buttonERTS.setEnabled(false);
+                    _buttonAL.setEnabled(false);
+                }
+                if(currentVehi.getPosition().equals("ERTL")){
+                    _buttonERTL.setEnabled(false);
+                    _buttonStation.setEnabled(false);
+                    _buttonERTS.setEnabled(false);
+                    _buttonAL.setEnabled(true);
+                }
             }
         }
         else {
@@ -116,6 +191,14 @@ public class VehiculeMainWindow extends JFrame{
                 RessourcesUpdated();
             }
         }
+    }
+    
+    public String getETA() {
+        return JOptionPane.showInputDialog(this,"Estimated time to arrival :");
+    }
+    
+    public void ErrorMessage(String m) {
+        JOptionPane.showMessageDialog(this, m, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
     private void initComponents() {

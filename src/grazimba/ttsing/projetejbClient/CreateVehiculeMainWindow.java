@@ -103,7 +103,6 @@ public class CreateVehiculeMainWindow extends JFrame{
         getContentPane().add(_buttonQuit,gbc);
         
         pack();
-        setVisible(true);
     }
     
     private void jButtonQuitActionPerformed(ActionEvent evt) {
@@ -135,6 +134,16 @@ public class CreateVehiculeMainWindow extends JFrame{
     
     public void RessourcesUpdated() {
         
+    }
+    
+        public void launch() {
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                setVisible(true);
+            }
+        });
     }
     
     /**

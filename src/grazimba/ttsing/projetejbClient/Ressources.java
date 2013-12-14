@@ -294,16 +294,16 @@ public class Ressources {
         return tmpR;
     }
     
-    public String getVehiculePosition(String idV) {
-        String tmpPos = null;
-        int i=0;
-        while(i<vehicule.size() && tmpPos==null) {
+    public Vehicule getVehiculesById(String idV) {
+        Vehicule tmpVehi = null;
+        int i=0; 
+        while(i<vehicule.size() && tmpVehi==null) {
             if(vehicule.get(i).getIdvehicule().equals(idV))
-                tmpPos=vehicule.get(i).getPosition();
+                tmpVehi=vehicule.get(i);
             else
                 i++;
         }
-        return tmpPos;
+        return tmpVehi;
     }
 
     public boolean VehiculeIdDispo(String idV){
@@ -313,6 +313,43 @@ public class Ressources {
                     find=true;
         }
         return find;
+    }
+    
+    public Crisis getCrisisByID(String idC) {
+        Crisis tmpCrisis = null;
+        int i=0;
+        while (i<crises.size() && tmpCrisis==null) {
+            if(crises.get(i).equals(idC)) {
+                tmpCrisis = crises.get(i);
+            }
+            else {
+                i++;
+            }
+        }
+        return tmpCrisis;
+    }
+    
+    public void setVehiculeETA(String idV) {
+        String tmpMinute = null;
+        long minutes=0;
+        while(tmpMinute == null) {
+            tmpMinute = ProjetEJBClient.getCont().getETA();
+            try {
+                minutes = Long.parseLong(tmpMinute);
+                if(minutes<1 || minutes>1000)
+                    throw new Exception();
+            }
+            catch(Exception e) {
+                ProjetEJBClient.getCont().ErrorMessage("Input must be a long type between 1 and 1000!");
+                tmpMinute = null;
+            }
+        }
+        
+        Date tmpETA = new Date();
+        tmpETA.setTime(tmpETA.getTime() + minutes*60000);
+        Vehicule tmpV = _vf.find(idV);
+        tmpV.setEta(tmpETA);
+        _vf.edit(tmpV);
     }
     
     /**
