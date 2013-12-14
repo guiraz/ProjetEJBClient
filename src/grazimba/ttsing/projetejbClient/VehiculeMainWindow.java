@@ -145,7 +145,13 @@ public class VehiculeMainWindow extends JFrame{
                 
                 if(currentVehi.getEta()==null)
                     ProjetEJBClient.getCont().setVehiculeETA(_currentVehicule);
-                _textAreaDesc.append("ETA : " + "n/c");
+                Date d = new Date();
+                long eta = currentVehi.getEta().getTime() - d.getTime();
+                eta /= 60000;
+                if(eta>=0)
+                    _textAreaDesc.append("ETA : " + eta + "minutes");
+                else
+                    _textAreaDesc.append("ETA : " + "elapsed");
                 
                 if(currentVehi.getPosition().equals("Station")){
                     _buttonERTL.setEnabled(true);

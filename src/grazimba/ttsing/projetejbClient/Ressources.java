@@ -64,11 +64,13 @@ public class Ressources {
     }
     
     public void AddCrise(Crisis c, Timeoutlog t, Routeplan rt) {
+        System.out.println("addcrise begin");
         _crise.create(c);
         if(t != null)
             _tl.create(t);
         _rp.create(rt);
         UpdateRessources();
+        System.out.println("addcrise end");
     }
     
     public void AddVehicule(Vehicule v){
@@ -77,7 +79,7 @@ public class Ressources {
     
     public void AddRoute(Route r){
         _rt.create(r);
-        Routeplan tmpRP = _rp.find(r.getRoutePK().getIdcrisis());
+        Routeplan tmpRP = getRoutePlanOfCrisis(r.getRoutePK().getIdcrisis());
         if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE)
             tmpRP.setNbfirevehicule(tmpRP.getNbfirevehicule()+1);
         else
@@ -86,19 +88,28 @@ public class Ressources {
         UpdateRessources();
     }
     
-    public void RemoveRoute(Route r){
-        _rt.remove(r);
-        Routeplan tmpRP = _rp.find(r.getRoutePK().getIdcrisis());
-        if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE)
-            tmpRP.setNbfirevehicule(tmpRP.getNbfirevehicule()-1);
-        else
-            tmpRP.setNbpolicevehicule(tmpRP.getNbpolicevehicule()-1);
-        _rp.edit(tmpRP);
-        UpdateRessources();
+    public void RemoveRouteByVehicule(String idV){
+        if((getVehiculesById(idV).getType().equals("Fire") && ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) || (getVehiculesById(idV).getType().equals("Police") && ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE)) {
+            Route tmpR = getRouteOfVehi(idV);
+            _rt.remove(tmpR);
+            Routeplan tmpRP = getRoutePlanOfCrisis(tmpR.getRoutePK().getIdcrisis());
+            if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE)
+                tmpRP.setNbfirevehicule(tmpRP.getNbfirevehicule()-1);
+            else
+                tmpRP.setNbpolicevehicule(tmpRP.getNbpolicevehicule()-1);
+            _rp.edit(tmpRP);
+            Vehicule v = getVehiculesById(idV);
+            v.setEta(null);
+            _vf.edit(v);
+            UpdateRessources();
+        }
+        else {
+            ProjetEJBClient.getCont().ErrorMessage("You can't remove this vehicule!");
+        }
     }
     
     public void EditRouteplan(String s){
-        Routeplan tmpRP = _rp.find(s);
+        Routeplan tmpRP = getRoutePlanOfCrisis(s);
         while(tmpRP.getNomroute()==null || tmpRP.getNomroute().equals(""))
             tmpRP.setNomroute(ProjetEJBClient.getCont().getRouteName());
         _rp.edit(tmpRP);
@@ -106,14 +117,14 @@ public class Ressources {
     }
     
     public void ComfirmRouteplan(String s){
-        Routeplan tmpRP = _rp.find(s);
+        Routeplan tmpRP = getRoutePlanOfCrisis(s);
         tmpRP.setComfirm("t");
         _rp.edit(tmpRP);
         UpdateRessources();
     }
     
     public void DeclineRouteplan(String s){
-        Routeplan tmpRP = _rp.find(s);
+        Routeplan tmpRP = getRoutePlanOfCrisis(s);
         tmpRP.setComfirm("f");
         tmpRP.setNomroute(null);
         _rp.edit(tmpRP);
@@ -122,9 +133,9 @@ public class Ressources {
     
     public void setCriseClosed(String s) {
         Date d = new Date();
-        Crisis tmpC = _crise.find(s);
+        Crisis tmpC = getCrisisByID(s);
         
-        Timeoutlog tmpTL = _tl.find(s);
+        Timeoutlog tmpTL = getTolOfCrisis(s);
         if(tmpTL != null) {
             if(d.getTime() > tmpTL.getD().getTime())
             {
@@ -148,7 +159,7 @@ public class Ressources {
                 _rt.remove(routes.get(i));
         }
         
-        Routeplan tmpRP = _rp.find(tmpC.getIdcrisis());
+        Routeplan tmpRP = getRoutePlanOfCrisis(tmpC.getIdcrisis());
         tmpRP.setNbfirevehicule(0);
         tmpRP.setNbpolicevehicule(0);
         _rp.edit(tmpRP);
@@ -175,35 +186,39 @@ public class Ressources {
         List<Vehicule> listVehi = new ArrayList<>();
         for(int i=0; i<routes.size(); i++) {
             if(routes.get(i).getRoutePK().getIdcrisis().equals(id)) {
+                String idV = routes.get(i).getRoutePK().getIdvehicule();
                 for(int j=0; j<vehicule.size(); j++) {
-                    if(vehicule.get(j).getIdvehicule().equals(routes.get(i).getRoutePK().getIdvehicule()))
+                    if(vehicule.get(j).getIdvehicule().equals(idV))
                         listVehi.add(vehicule.get(j));
                 }
             }
         }
-        if(listVehi.size()>0)
-            return listVehi;
-        else
-            return null;
+        return listVehi;
     }
     
     public Routeplan getRoutePlanOfCrisis(String id) {
-        return _rp.find(id);
+        Routeplan tmpRP = null;
+        int i=0;
+        while(i<toutePlan.size() && tmpRP == null){
+            if(toutePlan.get(i).getIdcrisis().equals(id))
+                tmpRP=toutePlan.get(i);
+            else
+                i++;
+        }
+        return tmpRP;
     }
     
     public List<Vehicule> getVehiculesForCrisis() {
-        List<Vehicule> vehiForCrisis = getVehicules();
-        for(int i=0; i<vehiForCrisis.size(); i++) {
-            if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) {
-                if(vehiForCrisis.get(i).getType().equals("Police") || !VehiculeDispo(vehiForCrisis.get(i).getIdvehicule())) {
-                    vehiForCrisis.remove(i);
-                    i--;
+        List<Vehicule> vehiForCrisis = new ArrayList<>();
+        for(int i=0; i<vehicule.size(); i++) {
+            if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE && vehicule.get(i).getType().equals("Fire")) {
+                if(VehiculeDispo(vehicule.get(i).getIdvehicule())) {
+                    vehiForCrisis.add(vehicule.get(i));
                 }
             }
-            if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE) {
-                if(vehiForCrisis.get(i).getType().equals("Fire") || !VehiculeDispo(vehiForCrisis.get(i).getIdvehicule())) {
-                    vehiForCrisis.remove(i);
-                    i--;
+            if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE && vehicule.get(i).getType().equals("Police")) {
+                if(VehiculeDispo(vehicule.get(i).getIdvehicule())) {
+                    vehiForCrisis.add(vehicule.get(i));
                 }
             }
         }
@@ -231,14 +246,14 @@ public class Ressources {
     
     private boolean VehiculeInUse(String id) {
         for(int i=0; i<vehicule.size(); i++) {
-            if(vehicule.get(i).getUsed().equals("t"))
+            if(vehicule.get(i).getUsed().equals("t") && vehicule.get(i).getIdvehicule().equals(id))
                 return true;
         }
         return false;
     }
     
     public void setVehiculeInUse(String idV, boolean inuse) {
-        Vehicule tmpV = _vf.find(idV);
+        Vehicule tmpV = getVehiculesById(idV);
         if(inuse)
             tmpV.setUsed("t");
         else
@@ -261,7 +276,7 @@ public class Ressources {
     }
     
     public void setVehiculePosition(String idV, int pos) {
-        Vehicule tmpV = _vf.find(idV);
+        Vehicule tmpV = getVehiculesById(idV);
         switch (pos) {
             case 0:
                 tmpV.setPosition("Station");
@@ -319,7 +334,7 @@ public class Ressources {
         Crisis tmpCrisis = null;
         int i=0;
         while (i<crises.size() && tmpCrisis==null) {
-            if(crises.get(i).equals(idC)) {
+            if(crises.get(i).getIdcrisis().equals(idC)) {
                 tmpCrisis = crises.get(i);
             }
             else {
@@ -347,7 +362,7 @@ public class Ressources {
         
         Date tmpETA = new Date();
         tmpETA.setTime(tmpETA.getTime() + minutes*60000);
-        Vehicule tmpV = _vf.find(idV);
+        Vehicule tmpV = getVehiculesById(idV);
         tmpV.setEta(tmpETA);
         _vf.edit(tmpV);
     }

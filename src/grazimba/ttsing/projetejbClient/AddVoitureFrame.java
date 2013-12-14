@@ -87,7 +87,7 @@ public class AddVoitureFrame extends JFrame {
     /**
      * AddVoiture Attributes
      */
-    private String _idCrisis;
+    private final String _idCrisis;
     private JPanel _contentPane;
     private GridLayout _layout;
     private JButton _okButton;

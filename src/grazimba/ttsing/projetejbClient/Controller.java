@@ -95,8 +95,8 @@ public class Controller {
         ProjetEJBClient.getRessource().AddRoute(r);
     }
     
-    public void RemoveRoute(Route r){
-        ProjetEJBClient.getRessource().RemoveRoute(r);
+    public void RemoveRouteByVehicule(String idV){
+        ProjetEJBClient.getRessource().RemoveRouteByVehicule(idV);
     }
     
     public void EditRouteplan(String s){
@@ -185,7 +185,19 @@ public class Controller {
     }
     
     public void ErrorMessage(String m) {
-        ProjetEJBClient.getVehiculeMainWindow().ErrorMessage(m);
+        switch(ProjetEJBClient.getTypeProgram()) {
+            case POLICE :
+                ProjetEJBClient.getMainWindow().ErrorMessage(m);
+                break;
+            case FIRE :
+                ProjetEJBClient.getMainWindow().ErrorMessage(m);
+                break;
+            case VEHICULE :
+                ProjetEJBClient.getVehiculeMainWindow().ErrorMessage(m);
+                break;
+            case CREATE_VEHICULES :
+                break;
+        }
     }
 }
 
