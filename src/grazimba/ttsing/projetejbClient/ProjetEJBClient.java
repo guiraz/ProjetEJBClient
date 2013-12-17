@@ -12,6 +12,8 @@ enum PROGRAM_CLIENT {POLICE, FIRE, VEHICULE, CREATE_VEHICULES};
 /**
  *
  * @author grazimba & ttsing
+ * 
+ * 
  */
 public class ProjetEJBClient {
 

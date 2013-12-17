@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 
 /**
  *
- * @author Wandy
+ * @author grazimba & ttsing
  */
 public class CreateVehiculeMainWindow extends JFrame{
     
@@ -105,6 +105,9 @@ public class CreateVehiculeMainWindow extends JFrame{
         pack();
     }
     
+    /*
+     * Action Perform pour le boutton quitter
+     */
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
         if(JOptionPane.showOptionDialog(null, "Do youwant to quit?", "Quit", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
@@ -112,8 +115,11 @@ public class CreateVehiculeMainWindow extends JFrame{
         }
     }
     
+    /*
+     * Action Performe lors de la creation d'un vehicule
+     */
     private void jButtonAddActionPerformed(ActionEvent evt) {
-        boolean find=false;
+        //On verifie si notre l'ID du vehicule est conforme a notre contrainte
         if(_textID.getText().length() <= 10 && _textID.getText().length() > 0){
             if(!ProjetEJBClient.getCont().VehiculeIdDispo(_textID.getText())){
                 v = new Vehicule(_textID.getText(),"Station",_comboBoxVehi.getSelectedItem().toString(),"f");

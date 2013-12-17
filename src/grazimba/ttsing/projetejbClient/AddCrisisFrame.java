@@ -25,6 +25,9 @@ import javax.swing.JTextField;
 /**
  *
  * @author grazimba & ttsing
+ * 
+ * Frame for Crisis we add new Crisis in the data base
+ * 
  */
 class AddCrisisFrame extends JFrame {
     
@@ -131,17 +134,23 @@ class AddCrisisFrame extends JFrame {
         setVisible(true);
     }
     
+    /*
+     * Action lorsque l'on souhaite ajouter une nouvelle crise 
+     */
     private void OKButtonActionPerformed(ActionEvent evt) {
+        //On verifie si nos champs contient du texte
         if((!_longitudeTextField.getText().isEmpty()) && (!_latitudeTextField.getText().isEmpty()))
         {
             if(_timerRadioButton.isSelected())
             {
                 if(!_timerTextField.getText().isEmpty())
                 {
+                    //Si les donnees dans le champ Longitude et Latitude sont des chiffre, sinon on affiche un message d'erreur
                     try
                     {
                         _crise.setLongitude(Float.parseFloat(_longitudeTextField.getText()));
                         _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
+                        //Verifie sur nous sommes dans les bonnes intervalle en Longitude et Latitude
                         if( (_crise.getLongitude()>= -180 &&  _crise.getLongitude() <= 180) && (_crise.getLatitude() >= -90 && _crise.getLatitude() <= 90) )
                         {
                             if(!_descTextArea.getText().isEmpty())
@@ -150,7 +159,7 @@ class AddCrisisFrame extends JFrame {
                             Date date = new Date();
                             date.setTime(_crise.getT().getTime() + Integer.parseInt(_timerTextField.getText()) * 60000);
                             _tol.setD(date);
-
+                            
                             ProjetEJBClient.getCont().AddCrisis(_crise, _tol, _rp);
 
                             this.dispose();
