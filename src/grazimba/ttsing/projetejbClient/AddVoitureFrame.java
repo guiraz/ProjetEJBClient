@@ -65,7 +65,9 @@ public class AddVoitureFrame extends JFrame {
         pack();
         setVisible(true);
     }
-    
+    /*
+     * Recupere les vehicules qui se trouve dans le Ressources en passant par le Controller
+     */
     private void recupVehicules() {
         _vehicules = ProjetEJBClient.getCont().getVehiculesForCrisis();
         for(int i=0; i < _vehicules.size(); i++) {

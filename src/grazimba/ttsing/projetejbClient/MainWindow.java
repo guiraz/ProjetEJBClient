@@ -21,6 +21,8 @@ import javax.swing.table.AbstractTableModel;
 /**
  *
  * @author grazimba & ttsing
+ * 
+ * 
  */
 public final class MainWindow extends javax.swing.JFrame {
 
@@ -42,7 +44,10 @@ public final class MainWindow extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    /*
+     * Init Component of the MainwWidow
+     */
 
     private void initComponents() {
 
@@ -225,7 +230,9 @@ public final class MainWindow extends javax.swing.JFrame {
         pack();
     }
     
-
+    /*
+     * 
+     */
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
         if(JOptionPane.showOptionDialog(null, "Do you want to quit?", "Quit", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
@@ -248,6 +255,9 @@ public final class MainWindow extends javax.swing.JFrame {
         ProjetEJBClient.getCont().UpdateRessources();
     }
     
+    /*
+     * On vérifie si la tableau contient et des lignes et si oui on supprime le vehicule selectionne
+     */
     private void jButtonRemoveVoiturePerformed(ActionEvent evt){
        if(jTableVehicules.getSelectedRow() >= 0){
           String idV = jTableVehicules.getValueAt(jTableVehicules.getSelectedRow(), 0).toString();

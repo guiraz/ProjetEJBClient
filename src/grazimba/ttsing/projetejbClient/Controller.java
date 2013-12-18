@@ -14,6 +14,7 @@ import java.util.List;
 /**
  *
  * @author grazimba & ttsing
+ * Les autres classes doivent acceder aux ressources via le Controller
  */
 public class Controller {
     

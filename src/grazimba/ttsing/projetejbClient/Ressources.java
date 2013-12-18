@@ -61,6 +61,9 @@ public class Ressources {
         ProjetEJBClient.getCont().RessourcesUpdated();
     }
     
+    /*
+     * Ajout d'une crise
+     */
     public void AddCrise(Crisis c, Timeoutlog t, Routeplan rt) {
         _crise.create(c);
         if(t != null)
@@ -69,10 +72,16 @@ public class Ressources {
         UpdateRessources();
     }
     
+    /*
+     * Ajout d'un vehicule
+     */
     public void AddVehicule(Vehicule v){
         _vf.create(v);
     }
     
+    /*
+     * Ajout d'une Route et avec le nombre de vehicule policier et pompier
+     */
     public void AddRoute(Route r){
         _rt.create(r);
         Routeplan tmpRP = getRoutePlanOfCrisis(r.getRoutePK().getIdcrisis());
@@ -84,6 +93,9 @@ public class Ressources {
         UpdateRessources();
     }
     
+    /*
+     * Supprime un vehicule
+     */
     public void RemoveRouteByVehicule(String idV){
         if((getVehiculesById(idV).getType().equals("Fire") && ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE) || (getVehiculesById(idV).getType().equals("Police") && ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.POLICE)) {
             Route tmpR = getRouteOfVehi(idV);
@@ -104,6 +116,9 @@ public class Ressources {
         }
     }
     
+    /*
+     * Moodification d'une routeplan
+     */
     public void EditRouteplan(String s){
         Routeplan tmpRP = getRoutePlanOfCrisis(s);
         while(tmpRP.getNomroute()==null || tmpRP.getNomroute().equals(""))
@@ -112,6 +127,9 @@ public class Ressources {
         UpdateRessources();
     }
     
+    /*
+     * Confirmation de la routeplan, on met le champ confirme à true dans la base de donnee
+     */
     public void ComfirmRouteplan(String s){
         Routeplan tmpRP = getRoutePlanOfCrisis(s);
         tmpRP.setComfirm("t");
@@ -119,6 +137,9 @@ public class Ressources {
         UpdateRessources();
     }
     
+    /*
+     * Refuse la routeplan, on met le champ confirme à false dans le base de donnee
+     */
     public void DeclineRouteplan(String s){
         Routeplan tmpRP = getRoutePlanOfCrisis(s);
         tmpRP.setComfirm("f");
@@ -127,6 +148,9 @@ public class Ressources {
         UpdateRessources();
     }
     
+    /*
+     * Archive une crise, on verifie que le timeoutlog est passe
+     */
     public void setCriseClosed(String s) {
         Date d = new Date();
         Crisis tmpC = getCrisisByID(s);
@@ -161,6 +185,9 @@ public class Ressources {
         _rp.edit(tmpRP);
     }
     
+    /*
+     * on recupere toute les crises qui sont active
+     */
     public List<Crisis> getActiveCrisis() {
         List<Crisis> crisesActives = new ArrayList<Crisis>();
         for(int i=0; i<crises.size(); i++) {
@@ -178,6 +205,9 @@ public class Ressources {
         return null;
     }
     
+    /*
+     * Recupere tous les vehicules qui sont liee a une crise
+     */
     public List<Vehicule> getVehiculesOfCrisis(String id) {
         List<Vehicule> listVehi = new ArrayList<Vehicule>();
         for(int i=0; i<routes.size(); i++) {
@@ -192,6 +222,9 @@ public class Ressources {
         return listVehi;
     }
     
+    /*
+     *  Recupere le routeplan lie a une crise
+     */
     public Routeplan getRoutePlanOfCrisis(String id) {
         Routeplan tmpRP = null;
         int i=0;
@@ -204,6 +237,9 @@ public class Ressources {
         return tmpRP;
     }
     
+    /*
+     *  Recupere tous les vehicules suivant leur type
+     */
     public List<Vehicule> getVehiculesForCrisis() {
         List<Vehicule> vehiForCrisis = new ArrayList<Vehicule>();
         for(int i=0; i<vehicule.size(); i++) {
@@ -221,6 +257,9 @@ public class Ressources {
         return vehiForCrisis;
     }
     
+    /*
+     * Recupere les vehicule qui sont disponible
+     */
     private boolean VehiculeDispo(String id) {
         if(!VehiculeInUse(id))
             return false;
@@ -231,6 +270,9 @@ public class Ressources {
         return true;
     }
     
+    /*
+     *  Recupere la liste des vehicule qui ne sont pas utilise
+     */
     public List<String> getFreeVehiculesIds() {
         List<String> tmpVehiIds = new ArrayList<String>();
         for(int i=0; i<vehicule.size(); i++) {
@@ -240,6 +282,9 @@ public class Ressources {
         return tmpVehiIds;
     }
     
+    /*
+     * On verifie si le vehicule est utilise ou pas
+     */
     private boolean VehiculeInUse(String id) {
         for(int i=0; i<vehicule.size(); i++) {
             if(vehicule.get(i).getUsed().equals("t") && vehicule.get(i).getIdvehicule().equals(id))
@@ -248,6 +293,9 @@ public class Ressources {
         return false;
     }
     
+    /*
+     * Modifie un vehicule pour le mettre a utilise ou non
+     */
     public void setVehiculeInUse(String idV, boolean inuse) {
         Vehicule tmpV = getVehiculesById(idV);
         if(inuse)
@@ -260,6 +308,9 @@ public class Ressources {
         _vf.edit(tmpV);
     }
     
+    /*
+     * Supprime une route
+     */
     private void removeRoutesOfVehicule(String idV) {
         List<Route> tmpRts = new ArrayList<Route>();
         for(int i=0; i<routes.size(); i++) {
@@ -271,6 +322,9 @@ public class Ressources {
         }
     }
     
+    /*
+     * met a jour la position d'un vehicule
+     */
     public void setVehiculePosition(String idV, int pos) {
         Vehicule tmpV = getVehiculesById(idV);
         switch (pos) {
@@ -293,6 +347,9 @@ public class Ressources {
         _vf.edit(tmpV);
     }
     
+    /*
+     * Recupere la route d'un vehicule
+     */
     public Route getRouteOfVehi(String idV) {
         Route tmpR = null;
         int i =0;
@@ -305,6 +362,9 @@ public class Ressources {
         return tmpR;
     }
     
+    /*
+     * Recupere un vehicule par son identifiant
+     */
     public Vehicule getVehiculesById(String idV) {
         Vehicule tmpVehi = null;
         int i=0; 
@@ -316,7 +376,10 @@ public class Ressources {
         }
         return tmpVehi;
     }
-
+    
+    /*
+     * Verifie si l'identifiant rentrer par l'utilisateur est valide
+     */
     public boolean VehiculeIdDispo(String idV){
         boolean find=false;
         for(int i = 0 ; i < ProjetEJBClient.getRessource().getVehicules().size(); i++){
@@ -326,6 +389,9 @@ public class Ressources {
         return find;
     }
     
+    /*
+     * Recupere une crise
+     */
     public Crisis getCrisisByID(String idC) {
         Crisis tmpCrisis = null;
         int i=0;
@@ -340,6 +406,9 @@ public class Ressources {
         return tmpCrisis;
     }
     
+    /*
+     * On ajoute un temps sur le vehicule
+     */
     public void setVehiculeETA(String idV) {
         String tmpMinute = null;
         long minutes=0;
