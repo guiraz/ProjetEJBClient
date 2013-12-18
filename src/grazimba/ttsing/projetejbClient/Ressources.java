@@ -162,7 +162,7 @@ public class Ressources {
     }
     
     public List<Crisis> getActiveCrisis() {
-        List<Crisis> crisesActives = new ArrayList<>();
+        List<Crisis> crisesActives = new ArrayList<Crisis>();
         for(int i=0; i<crises.size(); i++) {
             if(crises.get(i).getStatut().equals("Active"))
                 crisesActives.add(crises.get(i));
@@ -179,7 +179,7 @@ public class Ressources {
     }
     
     public List<Vehicule> getVehiculesOfCrisis(String id) {
-        List<Vehicule> listVehi = new ArrayList<>();
+        List<Vehicule> listVehi = new ArrayList<Vehicule>();
         for(int i=0; i<routes.size(); i++) {
             if(routes.get(i).getRoutePK().getIdcrisis().equals(id)) {
                 String idV = routes.get(i).getRoutePK().getIdvehicule();
@@ -205,7 +205,7 @@ public class Ressources {
     }
     
     public List<Vehicule> getVehiculesForCrisis() {
-        List<Vehicule> vehiForCrisis = new ArrayList<>();
+        List<Vehicule> vehiForCrisis = new ArrayList<Vehicule>();
         for(int i=0; i<vehicule.size(); i++) {
             if(ProjetEJBClient.getTypeProgram() == PROGRAM_CLIENT.FIRE && vehicule.get(i).getType().equals("Fire")) {
                 if(VehiculeDispo(vehicule.get(i).getIdvehicule())) {
@@ -232,7 +232,7 @@ public class Ressources {
     }
     
     public List<String> getFreeVehiculesIds() {
-        List<String> tmpVehiIds = new ArrayList<>();
+        List<String> tmpVehiIds = new ArrayList<String>();
         for(int i=0; i<vehicule.size(); i++) {
             if(!VehiculeInUse(vehicule.get(i).getIdvehicule()))
                 tmpVehiIds.add(vehicule.get(i).getIdvehicule());
@@ -261,7 +261,7 @@ public class Ressources {
     }
     
     private void removeRoutesOfVehicule(String idV) {
-        List<Route> tmpRts = new ArrayList<>();
+        List<Route> tmpRts = new ArrayList<Route>();
         for(int i=0; i<routes.size(); i++) {
             if(routes.get(i).getRoutePK().getIdvehicule().equals(idV))
                 tmpRts.add(routes.get(i));
