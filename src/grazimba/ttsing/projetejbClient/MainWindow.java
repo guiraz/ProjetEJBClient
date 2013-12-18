@@ -352,9 +352,9 @@ public final class MainWindow extends javax.swing.JFrame {
             //If there is one we get the timer and calculate the remaining time to display it on the text area
             if(currentTol != null) {
                 Date cd = new Date();
-                long minutes = currentTol.getD().getTime() - cd.getTime();
+                float minutes = currentTol.getD().getTime() - cd.getTime();
                 minutes /= 60000;
-                if(minutes >= 0)
+                if(minutes > 0)
                     jTextAreaDescription.append("Timer : " + minutes + " minutes" + "\r\n" + "\r\n");
                 else
                     jTextAreaDescription.append("Timer : " + "elapsed"  + "\r\n" + "\r\n");

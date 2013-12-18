@@ -135,7 +135,7 @@ public class VehiculeMainWindow extends JFrame{
                 }
                 if(tolOfCrisis != null) {
                     Date d = new Date();
-                    long timer = tolOfCrisis.getD().getTime() - d.getTime();
+                    float timer = tolOfCrisis.getD().getTime() - d.getTime();
                     timer /= 60000;
                     if(timer>0)
                         _textAreaDesc.append("Timer : " + timer + " minutes" + "\r\n" + "\r\n");
