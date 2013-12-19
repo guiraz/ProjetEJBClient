@@ -231,7 +231,7 @@ public final class MainWindow extends javax.swing.JFrame {
     }
     
     /*
-     * 
+     * Quit Button Action
      */
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
@@ -240,16 +240,25 @@ public final class MainWindow extends javax.swing.JFrame {
         }
     }
     
+    /*
+     * AddCrisis Button Action
+     */
     private void jButtonAddCrisePerformed(ActionEvent evt) {
         AddCrisisFrame acf = new AddCrisisFrame();
         ProjetEJBClient.getCont().UpdateRessources();
     }
     
+    /*
+     * CloseCrisis Button Action
+     */
     private void jButtonCloseCrisePerformed(java.awt.event.ActionEvent evt) {
         ProjetEJBClient.getCont().setCriseClosed(jComboBoxCrisis.getSelectedItem().toString());
         ProjetEJBClient.getCont().UpdateRessources();
     }
 
+    /*
+     * AddVehicule Button Action
+     */
     private void jButtonAddVoiturePerformed(ActionEvent evt){
         AddVoitureFrame avf = new AddVoitureFrame(jComboBoxCrisis.getSelectedItem().toString());
         ProjetEJBClient.getCont().UpdateRessources();
@@ -269,23 +278,38 @@ public final class MainWindow extends javax.swing.JFrame {
       }
     }
     
+    /*
+     * AddRoute Button Action
+     */
     private void jButtonAddRoutePerformed(ActionEvent evt){
         ProjetEJBClient.getCont().EditRouteplan(jComboBoxCrisis.getSelectedItem().toString());
     }
     
+    /*
+     * ComfirmRoute Button Action
+     */
     private void jButtonComfirmRoutePerformed(ActionEvent evt){
         ProjetEJBClient.getCont().ComfirmRouteplan(jComboBoxCrisis.getSelectedItem().toString());
     }
     
+    /*
+     * DeclineRoute Button Action
+     */
     private void jButtonDeclineRoutePerformed(ActionEvent evt){
         ProjetEJBClient.getCont().DeclineRouteplan(jComboBoxCrisis.getSelectedItem().toString());
     }
     
+    /*
+     * ComboBox Item Changed
+     */
     private void CrisisComboBoxItemChanged(ActionEvent evt) {
         _currentCrisis = jComboBoxCrisis.getSelectedIndex();
         RessourcesUpdated();
     }
     
+    /*
+     * Gui's thread launch
+     */
     public void launch() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -313,6 +337,9 @@ public final class MainWindow extends javax.swing.JFrame {
         });
     }
     
+    /*
+     * Updating gui procedure
+     */
     public void RessourcesUpdated(){
         _updating = true;
         
@@ -437,22 +464,37 @@ public final class MainWindow extends javax.swing.JFrame {
         _updating = false;
     }
     
+    /*
+     * Function returning the combobox
+     */
     public JComboBox getComboBoxCrisis(){
         return jComboBoxCrisis;
     }
     
+    /*
+     * Function asking reasons why timer elapsed
+     */
     public String getReasons() {
         return JOptionPane.showInputDialog("Reasons why timer elapsed :");
     }
     
+    /*
+     * Function asking the name of the route
+     */
     public String getRouteName() {
         return JOptionPane.showInputDialog("Route Name :");
     }
     
+    /*
+     * Procedure displaying an error message
+     */
     public void ErrorMessage(String m) {
         JOptionPane.showMessageDialog(this, m, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
+    /*
+     * MainWindow attributes
+     */
     private javax.swing.JButton jButtonQuit;
     private javax.swing.JButton jButtonAddCrise;
     private javax.swing.JButton jButtonCloseCrise;
@@ -475,6 +517,10 @@ public final class MainWindow extends javax.swing.JFrame {
     private static boolean _updating;
 }
 
+
+/*
+ * Model for jTable
+ */
 class MyTableModel extends AbstractTableModel {
     
     String[] columnNames = {"ID Vehicule", "Estimated Time to Arrival", "Position", "Type"};

@@ -28,6 +28,9 @@ import javax.swing.JTextField;
  */
 public class CreateVehiculeMainWindow extends JFrame{
     
+    /*
+     * CreateVehiculeMainWindow constructor
+     */
     public CreateVehiculeMainWindow(){
         
         initComponents();
@@ -43,6 +46,9 @@ public class CreateVehiculeMainWindow extends JFrame{
         
     }
     
+    /*
+     * Gui initialization
+     */
     public void initComponents(){
         setTitle("Create Vehicule Client");
         

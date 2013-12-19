@@ -72,31 +72,51 @@ public class ProjetEJBClient {
         
     }
     
+    /*
+     * MainWindow getter
+     */
     public static MainWindow getMainWindow() {
         return _mw;
     }
     
+    /*
+     * VehiculeMainWindow getter
+     */
     public static VehiculeMainWindow getVehiculeMainWindow() {
         return _vmw;
     }
     
+    /*
+     * CreateVehiculeMainWindow getter
+     */
     public static CreateVehiculeMainWindow getCreateVehiculeMainWindow() {
         return _cvmw;
     }
     
+    /*
+     * Ressources getter
+     */
     public static Ressources getRessource() {
         return _ressource;
     }
     
+    /*
+     * Controller getter
+     */
     public static Controller getCont() {
         return _cont;
     }
     
+    /*
+     * ThreadMAJ getter
+     */
     public static ThreadMAJ getThreadMAJ() {
         return _tMAJ;
     }
 
-    
+    /*
+     * TypeProgram getter
+     */
     public static PROGRAM_CLIENT getTypeProgram() {
         return _typeProgram;
     }

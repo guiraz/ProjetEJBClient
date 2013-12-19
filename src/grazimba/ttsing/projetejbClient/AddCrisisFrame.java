@@ -45,11 +45,17 @@ class AddCrisisFrame extends JFrame {
     private JTextArea _descTextArea;
     private JTextField _timerTextField;
     
+    
+    /*
+     * AddCrisisFrame constructor
+     */
     public AddCrisisFrame() {
         _crise = new Crisis();
         _rp = new Routeplan();
         _tol = new Timeoutlog();
         
+        
+        //ID Generator
         BigInteger bi = new BigInteger(130, new Random());
         _crise.setIdcrisis(bi.toString(32).substring(0, 9));
         _rp.setIdcrisis(_crise.getIdcrisis());
@@ -69,6 +75,9 @@ class AddCrisisFrame extends JFrame {
         this.pack();
     }
     
+    /*
+     * Gui initialization
+     */
     private void initLayout() {
         _contentPane = (JPanel) this.getContentPane();
         _layout = new GridLayout(7,2);
@@ -135,7 +144,7 @@ class AddCrisisFrame extends JFrame {
     }
     
     /*
-     * Action lorsque l'on souhaite ajouter une nouvelle crise 
+     * OK Button Action
      */
     private void OKButtonActionPerformed(ActionEvent evt) {
         //On verifie si nos champs contient du texte
@@ -150,12 +159,13 @@ class AddCrisisFrame extends JFrame {
                     {
                         _crise.setLongitude(Float.parseFloat(_longitudeTextField.getText()));
                         _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
-                        //Verifie sur nous sommes dans les bonnes intervalle en Longitude et Latitude
+                        //Verifie si nous sommes dans les bonnes intervalles en Longitude et Latitude
                         if( (_crise.getLongitude()>= -180 &&  _crise.getLongitude() <= 180) && (_crise.getLatitude() >= -90 && _crise.getLatitude() <= 90) )
                         {
                             if(!_descTextArea.getText().isEmpty())
                                 _crise.setDescription(_descTextArea.getText());
 
+                            //Timer creation
                             Date date = new Date();
                             date.setTime(_crise.getT().getTime() + Integer.parseInt(_timerTextField.getText()) * 60000);
                             _tol.setD(date);
@@ -180,6 +190,7 @@ class AddCrisisFrame extends JFrame {
             }
             else
             {
+                //Crisis creation without timer
                 _crise.setLongitude(Float.parseFloat(_longitudeTextField.getText()));
                 _crise.setLatitude(Float.parseFloat(_latitudeTextField.getText()));
                 if(!_descTextArea.getText().isEmpty())
@@ -195,10 +206,16 @@ class AddCrisisFrame extends JFrame {
         }
     }
     
+    /*
+     * Cancel Button Action
+     */
     private void CancelButtonActionPerformed(ActionEvent evt) {
         this.dispose();
     }
     
+    /*
+     * Timer RadioButton Action
+     */
     private void TimerRadioButtonActionPerformed(ActionEvent evt) {
         if(_timerRadioButton.isSelected())
             _timerTextField.setEnabled(true);

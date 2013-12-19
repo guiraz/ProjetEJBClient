@@ -22,12 +22,18 @@ import javax.swing.JLabel;
  */
 public class AddVoitureFrame extends JFrame {
     
+    /*
+     * AddVoitureFrame Constructor
+     */
     public AddVoitureFrame(String id){
         setTitle("Add Vehicule");
         _idCrisis = id;
         InitLayout();
     }
     
+    /*
+     * Gui Initialization
+     */
     private void InitLayout(){
         _contentPane = (JPanel) this.getContentPane();
         _layout = new GridLayout(2,2);
@@ -65,6 +71,7 @@ public class AddVoitureFrame extends JFrame {
         pack();
         setVisible(true);
     }
+    
     /*
      * Recupere les vehicules qui se trouve dans le Ressources en passant par le Controller
      */
@@ -75,6 +82,9 @@ public class AddVoitureFrame extends JFrame {
         }
     }
     
+    /*
+     * OK Button Action
+     */
     private void OKButtonActionPerformed(ActionEvent evt){
         RoutePK rpk = new RoutePK(_vehiList.getSelectedItem().toString(), _idCrisis);
         Route r = new Route(rpk);
@@ -82,6 +92,9 @@ public class AddVoitureFrame extends JFrame {
         this.dispose();
     }
     
+    /*
+     * Cancel Button Action
+     */
     private void CancelButtonActionPerformed(ActionEvent evt) {
         this.dispose();
     }

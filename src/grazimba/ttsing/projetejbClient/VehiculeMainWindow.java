@@ -33,6 +33,9 @@ import javax.swing.SwingConstants;
  */
 public class VehiculeMainWindow extends JFrame{
     
+    /*
+     * VehiculeMainWindow constructor
+     */
     public VehiculeMainWindow() {
         
         initComponents();
@@ -48,6 +51,9 @@ public class VehiculeMainWindow extends JFrame{
         });
     }
     
+    /*
+     * VehiculeMainWindow thread launch
+     */
     public void launch() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -75,6 +81,9 @@ public class VehiculeMainWindow extends JFrame{
         });
     }
     
+    /*
+     * VehiculeMainWindow gui's update
+     */
     public void RessourcesUpdated() {
         if(_currentVehicule!=null && !_currentVehicule.equals("")) {
             _labelId.setText(_currentVehicule);
@@ -199,14 +208,23 @@ public class VehiculeMainWindow extends JFrame{
         }
     }
     
+    /*
+     * Function asking user the ETA of a vehicule
+     */
     public String getETA() {
         return JOptionPane.showInputDialog(this,"Estimated time to arrival :");
     }
     
+    /*
+     * Procedure displaying an error message
+     */
     public void ErrorMessage(String m) {
         JOptionPane.showMessageDialog(this, m, "Error", JOptionPane.ERROR_MESSAGE);
     }
     
+    /*
+     * Gui's initialization
+     */
     private void initComponents() {
         setTitle("Vehicule Client");
         _currentVehicule = new String("");
@@ -312,6 +330,9 @@ public class VehiculeMainWindow extends JFrame{
         );
     }
     
+    /*
+     * Quit Button Action
+     */
     private void jButtonQuitActionPerformed(ActionEvent evt) {
         Object[] options = { "OK", "CANCEL" };
         if(JOptionPane.showOptionDialog(null, "Do you want to quit?", "Quit", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]) == JOptionPane.OK_OPTION) {
@@ -320,21 +341,33 @@ public class VehiculeMainWindow extends JFrame{
         }
     }
     
+    /*
+     * Station Button Action
+     */
     private void jButtonStationActionPerformed(ActionEvent evt) {
         ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 0);
         ProjetEJBClient.getCont().UpdateRessources();
     }
     
+    /*
+     * ERTS Button Action
+     */
     private void jButtonERTSActionPerformed(ActionEvent evt) {
         ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 3);
         ProjetEJBClient.getCont().UpdateRessources();
     }
     
+    /*
+     * AL Button Action
+     */
     private void jButtonALActionPerformed(ActionEvent evt) {
         ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 2);
         ProjetEJBClient.getCont().UpdateRessources();
     }
     
+    /*
+     * ERTL Button Action
+     */
     private void jButtonERTLActionPerformed(ActionEvent evt) {
         ProjetEJBClient.getCont().setVehiculePosition(_currentVehicule, 1);
         ProjetEJBClient.getCont().UpdateRessources();

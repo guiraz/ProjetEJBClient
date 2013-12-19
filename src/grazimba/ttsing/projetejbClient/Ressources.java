@@ -30,8 +30,7 @@ public class Ressources {
     private RouteplanFacadeRemote _rp;
     private RouteFacadeRemote _rt;
     
-    public Ressources()
-    {
+    public Ressources() {
         try
         {
             _jndi_context = new javax.naming.InitialContext();
